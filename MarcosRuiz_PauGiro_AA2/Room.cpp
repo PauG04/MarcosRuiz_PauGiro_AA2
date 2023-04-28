@@ -97,6 +97,7 @@ void Room::MoveLink(Direction key)
 {
 	if (CheckMovement(key) == ' ')
 	{
+		room[link.x][link.y] = ' ';
 		switch (key)
 		{
 		case Direction::UP:
@@ -112,6 +113,7 @@ void Room::MoveLink(Direction key)
 			link.x += 1;
 			break;
 		}
+		room[link.x][link.y] = (char)link.m_direction;
 	}
 }
 

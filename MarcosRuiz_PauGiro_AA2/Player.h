@@ -7,7 +7,8 @@ enum class Direction
 	UP = '^',
 	DOWN = 'v',
 	LEFT = '<',
-	RIGHT = '>'
+	RIGHT = '>',
+	BUG = '?'
 };
 
 class Player
