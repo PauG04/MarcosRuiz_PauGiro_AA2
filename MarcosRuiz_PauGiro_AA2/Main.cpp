@@ -1,14 +1,15 @@
 #include "Main.h"
 
 void input(Direction& key, Game& game)
-{
-	game.GetRoom().MoveLink(key);
+{	
+	game.GetRoom()->MoveLink(key);
 	key = Direction::BUG;
 }
 
 int main()
 {
 	// CONFIGURATION
+	const int FPS = 60;
 	bool isPlaying = true;
 	Direction userPressedKey = Direction::BUG;
 	Game game;
@@ -18,8 +19,8 @@ int main()
 	// GAME LOOP
 	while (isPlaying)
 	{
-		game.GetRoom().PrintRoom();
-		while (userPressedKey == Direction::BUG)
+		game.GetRoom()->PrintRoom();
+		if (userPressedKey == Direction::BUG)
 		{
 			if (GetAsyncKeyState(VK_UP))
 			{
@@ -38,7 +39,7 @@ int main()
 				userPressedKey = Direction::RIGHT;
 			}
 		}
-		while (userPressedKey != Direction::BUG)
+		if (userPressedKey != Direction::BUG)
 		{
 			if (GetAsyncKeyState(VK_UP) == 0 && userPressedKey == Direction::UP)
 			{
@@ -56,7 +57,9 @@ int main()
 			{
 				input(userPressedKey, game);
 			}
+
 		}
+		Sleep(1000 / FPS);
 		system("cls");
 	}
 

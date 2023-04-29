@@ -31,7 +31,7 @@ public:
 
 	Scene GetCurrentScene() const;
 
-	Room GetRoom() const;
+	Room* GetRoom();
 
 };
 

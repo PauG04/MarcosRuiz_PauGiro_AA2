@@ -9,6 +9,7 @@ void Room::CreateRoom(const int& width, const int& height)
 	link.x = m_height / 2;
 	link.y = m_width - 2;
 
+	
 	//if !pillasPuertaDeArriba
 	link.m_direction = Direction::UP;
 	//else

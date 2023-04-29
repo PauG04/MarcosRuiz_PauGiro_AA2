@@ -74,7 +74,7 @@ Scene Game::GetCurrentScene() const
 	return currentScene;
 }
 
-Room Game::GetRoom() const
+Room* Game::GetRoom() 
 {
-	return room;
+	return &room;
 }

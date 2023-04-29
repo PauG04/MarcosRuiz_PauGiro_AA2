@@ -25,6 +25,11 @@ public:
 
 	char ReturnSquare(int height, int width);
 
+	Player GetLink()
+	{
+		return link;
+	}
+
 	friend class Game;
 };
 

@@ -13,7 +13,7 @@ enum class Direction
 
 class Player
 {
-private:
+public:
 	int x, y;
 	Direction m_direction;
 
