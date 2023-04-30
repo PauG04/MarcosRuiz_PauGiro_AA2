@@ -30,15 +30,13 @@ void Room::CreateRoom(const int& width, const int& height)
 			{
 				room[j][i] = (char)link.m_direction;
 			}
-			
-			
+				
 			else if ((i == 0 || i == (m_width - 1)) && j == m_height / 2)
 			{
 				room[j][i] = 'P';
 			
 			}
-		
-			
+				
 			else if (i == 0 || i == (m_width - 1) || j == 0 || j == (m_height - 1))
 			{
 				room[j][i] = 'X';
@@ -97,7 +95,7 @@ void Room::DestroyRoom()
 
 char Room::ReturnSquare(int height, int width)
 {
-	return room[height][width];
+	return room[width][height];
 }
 
 void Room::MoveLink(Direction key)
@@ -125,10 +123,6 @@ void Room::MoveLink(Direction key)
 			break;
 		}
 		room[link.x][link.y] = (char)link.m_direction;
-	}
-	if (CheckMovement(key) == ' ')
-	{
-		//mirar en cual de las 3 salas esta y apartir de eso plantear el movimiento
 	}
 }
 

@@ -2,7 +2,7 @@
 
 Game::Game()
 {
-	currentScene = Scene::CAFE;
+	currentScene = Scene::CLASSROOM;
 }
 
 void Game::GameManager()
@@ -14,7 +14,7 @@ void Game::GameManager()
 		break;
 
 	case Scene::CLASSROOM:
-		room.CreateRoom(5, 5);
+		room.CreateRoom(5, 7);
 		break;
 
 	case Scene::HALLWAY:
@@ -40,12 +40,17 @@ void Game::Play(Direction key)
 
 	if (room.EnterDoor(key))
 	{
-		NextScene();
+		if (room.link.y <= 1)
+		{
+			NextScene();
+		}
+		else
+		{
+			PrevScene();
+		}
 		system("cls");
 	}
-
 	room.MoveLink(key);
-
 	system("cls");
 }
 
