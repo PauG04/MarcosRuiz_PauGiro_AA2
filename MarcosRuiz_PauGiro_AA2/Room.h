@@ -9,6 +9,7 @@ private:
 	int m_height;
 
 	Player link;
+	
 
 public:
 	void CreateRoom(const int& numRows, const int& numCols);
@@ -25,10 +26,7 @@ public:
 
 	char ReturnSquare(int height, int width);
 
-	Player GetLink()
-	{
-		return link;
-	}
+	Player GetLink();
 
 	friend class Game;
 };

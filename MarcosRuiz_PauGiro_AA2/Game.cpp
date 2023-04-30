@@ -2,7 +2,7 @@
 
 Game::Game()
 {
-	currentScene = Scene::CLASSROOM;
+	currentScene = Scene::CAFE;
 }
 
 void Game::GameManager()
@@ -22,7 +22,7 @@ void Game::GameManager()
 		break;
 
 	case Scene::CAFE:
-		room.CreateRoom(4, 9);
+		room.CreateRoom(6, 9);
 		break;
 
 	case Scene::GAMEOVER:
@@ -68,6 +68,12 @@ void Game::NextScene()
 {
 	currentScene = (Scene)((int)currentScene + 1);
 }
+
+void Game::PrevScene()
+{
+	currentScene = (Scene)((int)currentScene - 1);
+}
+
 
 Scene Game::GetCurrentScene() const
 {

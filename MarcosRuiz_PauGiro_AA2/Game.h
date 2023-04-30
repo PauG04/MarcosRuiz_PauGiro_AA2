@@ -29,6 +29,8 @@ public:
 
 	void NextScene();
 
+	void PrevScene();
+
 	Scene GetCurrentScene() const;
 
 	Room* GetRoom();

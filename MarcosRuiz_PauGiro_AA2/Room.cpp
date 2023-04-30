@@ -30,10 +30,15 @@ void Room::CreateRoom(const int& width, const int& height)
 			{
 				room[j][i] = (char)link.m_direction;
 			}
+			
+			
 			else if ((i == 0 || i == (m_width - 1)) && j == m_height / 2)
 			{
 				room[j][i] = 'P';
+			
 			}
+		
+			
 			else if (i == 0 || i == (m_width - 1) || j == 0 || j == (m_height - 1))
 			{
 				room[j][i] = 'X';
@@ -41,6 +46,7 @@ void Room::CreateRoom(const int& width, const int& height)
 			else
 			{
 				room[j][i] = ' ';
+				
 			}
 		}
 	}
@@ -103,18 +109,26 @@ void Room::MoveLink(Direction key)
 		{
 		case Direction::UP:
 			link.y -= 1;
+			link.m_direction = Direction::UP;
 			break;
 		case Direction::DOWN:
 			link.y += 1;
+			link.m_direction = Direction::DOWN;
 			break;
 		case Direction::LEFT:
 			link.x -= 1;
+			link.m_direction = Direction::LEFT;
 			break;
 		case Direction::RIGHT:
 			link.x += 1;
+			link.m_direction = Direction::RIGHT;
 			break;
 		}
 		room[link.x][link.y] = (char)link.m_direction;
+	}
+	if (CheckMovement(key) == ' ')
+	{
+		//mirar en cual de las 3 salas esta y apartir de eso plantear el movimiento
 	}
 }
 
@@ -126,4 +140,10 @@ bool Room::EnterDoor(Direction key)
 	return false;
 
 }
+
+Player Room::GetLink()
+{
+	return link;
+}
+
 
