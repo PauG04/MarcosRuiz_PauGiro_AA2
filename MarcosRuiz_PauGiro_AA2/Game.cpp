@@ -11,6 +11,27 @@ void Game::Input(Direction& key)
 	key = Direction::BUG;
 }
 
+int Game::ReadFile(int numberToRead)
+{
+	int i = 0, aux;
+	int* arrayNum = new int[numberToRead];
+
+	std::ifstream roomInfo("config.txt");
+	if (roomInfo.is_open())
+	{
+		while (roomInfo >> aux)
+		{
+			arrayNum[i++] = aux;
+		}
+		roomInfo.close();
+	}
+
+	int num = arrayNum[numberToRead - 1];
+	//delete[] arrayNum;
+	//arrayNum = nullptr;
+	return num;
+}
+
 void Game::GameManager()
 {
 	switch (currentScene)
@@ -20,15 +41,15 @@ void Game::GameManager()
 		break;
 
 	case Scene::CLASSROOM:
-		room.CreateRoom(5, 7);
+		room.CreateRoom(ReadFile(1), ReadFile(2));
 		break;
 
 	case Scene::HALLWAY:
-		room.CreateRoom(6, 6);
+		room.CreateRoom(ReadFile(3), ReadFile(4));
 		break;
 
 	case Scene::CAFE:
-		room.CreateRoom(6, 9);
+		room.CreateRoom(ReadFile(5), ReadFile(6));
 		break;
 
 	case Scene::GAMEOVER:

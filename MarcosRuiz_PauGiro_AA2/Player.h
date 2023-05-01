@@ -8,7 +8,8 @@ enum class Direction
 	DOWN = 'v',
 	LEFT = '<',
 	RIGHT = '>',
-	BUG = '?'
+	BUG,
+	ESCAPE
 };
 
 class Player

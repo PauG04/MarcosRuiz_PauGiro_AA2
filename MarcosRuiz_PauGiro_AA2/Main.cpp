@@ -36,10 +36,18 @@ int main()
 				{
 					userPressedKey = Direction::RIGHT;
 				}
+				else if (GetAsyncKeyState(VK_ESCAPE))
+				{
+					userPressedKey = Direction::ESCAPE;
+				}
 			}
 			while (userPressedKey != Direction::BUG)
 			{
-				if (GetAsyncKeyState(VK_UP) == 0 && userPressedKey == Direction::UP)
+				if (GetAsyncKeyState(VK_ESCAPE) == 0 && userPressedKey == Direction::ESCAPE)
+				{
+					exit(0);
+				}
+				else if (GetAsyncKeyState(VK_UP) == 0 && userPressedKey == Direction::UP)
 				{
 					game.Input(userPressedKey);
 				}

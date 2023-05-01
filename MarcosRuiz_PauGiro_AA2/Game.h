@@ -1,5 +1,6 @@
 #pragma once
 #include "Room.h"
+#include <fstream>
 
 enum class Scene
 {
@@ -36,6 +37,8 @@ public:
 	Room* GetRoom();
 
 	void Input(Direction& key);
+
+	int ReadFile(int i);
 
 };
 
