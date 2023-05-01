@@ -5,6 +5,12 @@ Game::Game()
 	currentScene = Scene::CLASSROOM;
 }
 
+void Game::Input(Direction& key)
+{
+	room.MoveLink(key);
+	key = Direction::BUG;
+}
+
 void Game::GameManager()
 {
 	switch (currentScene)

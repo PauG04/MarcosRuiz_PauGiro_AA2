@@ -35,6 +35,8 @@ public:
 
 	Room* GetRoom();
 
+	void Input(Direction& key);
+
 };
 
 

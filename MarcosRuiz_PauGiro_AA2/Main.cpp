@@ -1,11 +1,5 @@
 #include "Main.h"
 
-void input(Direction& key, Game& game)
-{	
-	game.GetRoom()->MoveLink(key);
-	key = Direction::BUG;
-}
-
 int main()
 {
 	// CONFIGURATION
@@ -13,54 +7,60 @@ int main()
 	bool isPlaying = true;
 	Direction userPressedKey = Direction::BUG;
 	Game game;
-	Scene sameScene = Scene::CLASSROOM;
 	game.GameManager();
+	Scene lastScene = game.GetCurrentScene();
 
 	// GAME LOOP
 	while (isPlaying)
 	{
-		game.GetRoom()->PrintRoom();
-		if (userPressedKey == Direction::BUG)
+		game.GameManager();
+		while (lastScene == game.GetCurrentScene())
 		{
-			if (GetAsyncKeyState(VK_UP))
+			lastScene = game.GetCurrentScene();
+			game.GetRoom()->PrintRoom();
+			while (userPressedKey == Direction::BUG)
 			{
-				userPressedKey = Direction::UP;
+				if (GetAsyncKeyState(VK_UP))
+				{
+					userPressedKey = Direction::UP;
+				}
+				else if (GetAsyncKeyState(VK_DOWN))
+				{
+					userPressedKey = Direction::DOWN;
+				}
+				else if (GetAsyncKeyState(VK_LEFT))
+				{
+					userPressedKey = Direction::LEFT;
+				}
+				else if (GetAsyncKeyState(VK_RIGHT))
+				{
+					userPressedKey = Direction::RIGHT;
+				}
 			}
-			else if (GetAsyncKeyState(VK_DOWN))
+			while (userPressedKey != Direction::BUG)
 			{
-				userPressedKey = Direction::DOWN;
-			}
-			else if (GetAsyncKeyState(VK_LEFT))
-			{
-				userPressedKey = Direction::LEFT;
-			}
-			else if (GetAsyncKeyState(VK_RIGHT))
-			{
-				userPressedKey = Direction::RIGHT;
-			}
-		}
-		if (userPressedKey != Direction::BUG)
-		{
-			if (GetAsyncKeyState(VK_UP) == 0 && userPressedKey == Direction::UP)
-			{
-				input(userPressedKey, game);
-			}
-			else if (GetAsyncKeyState(VK_DOWN) == 0 && userPressedKey == Direction::DOWN)
-			{
-				input(userPressedKey, game);
-			}
-			else if (GetAsyncKeyState(VK_LEFT) == 0 && userPressedKey == Direction::LEFT)
-			{
-				input(userPressedKey, game);
-			}
-			else if (GetAsyncKeyState(VK_RIGHT) == 0 && userPressedKey == Direction::RIGHT)
-			{
-				input(userPressedKey, game);
-			}
+				if (GetAsyncKeyState(VK_UP) == 0 && userPressedKey == Direction::UP)
+				{
+					game.Input(userPressedKey);
+				}
+				else if (GetAsyncKeyState(VK_DOWN) == 0 && userPressedKey == Direction::DOWN)
+				{
+					game.Input(userPressedKey);
+				}
+				else if (GetAsyncKeyState(VK_LEFT) == 0 && userPressedKey == Direction::LEFT)
+				{
+					game.Input(userPressedKey);
+				}
+				else if (GetAsyncKeyState(VK_RIGHT) == 0 && userPressedKey == Direction::RIGHT)
+				{
+					game.Input(userPressedKey);
+				}
 
+			}
+			Sleep(1000 / FPS);
+			system("cls");
 		}
-		Sleep(1000 / FPS);
-		system("cls");
+		
 	}
 
 	return 0;
