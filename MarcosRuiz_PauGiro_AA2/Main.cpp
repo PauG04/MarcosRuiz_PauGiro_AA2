@@ -14,6 +14,7 @@ int main()
 	while (isPlaying)
 	{
 		game.GameManager();
+		lastScene = game.GetCurrentScene();
 		while (lastScene == game.GetCurrentScene())
 		{
 			lastScene = game.GetCurrentScene();
@@ -63,7 +64,6 @@ int main()
 				{
 					game.Input(userPressedKey);
 				}
-
 			}
 			Sleep(1000 / FPS);
 			system("cls");

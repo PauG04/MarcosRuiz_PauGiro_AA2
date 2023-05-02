@@ -1,6 +1,7 @@
 #pragma once
 #include "Room.h"
 #include <fstream>
+#include <string>
 
 enum class Scene
 {
@@ -22,7 +23,7 @@ public:
 
 	void GameManager();
 
-	void Play(Direction key);
+	void EnterDoor(Direction key);
 
 	void Start();
 
@@ -38,7 +39,7 @@ public:
 
 	void Input(Direction& key);
 
-	int ReadFile(int i);
+	int* ReadFile(int i);
 
 };
 

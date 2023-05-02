@@ -12,11 +12,9 @@ private:
 	
 
 public:
-	void CreateRoom(const int& numRows, const int& numCols);
+	void CreateRoom(const int& width, const int& height, int numberOfRoom);
 
 	void PrintRoom();
-
-	bool EnterDoor(Direction key);
 
 	char CheckMovement(Direction key);
 

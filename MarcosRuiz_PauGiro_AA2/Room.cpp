@@ -1,19 +1,25 @@
 #include "Room.h"
 
-
-void Room::CreateRoom(const int& width, const int& height)
+void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 {
+	
 	m_width = width;
 	m_height = height;
 
-	link.x = m_height / 2;
-	link.y = m_width - 2;
+	link.x = m_width / 2;
+	link.y = m_height - 2;
 
 	
-	//if !pillasPuertaDeArriba
-	link.m_direction = Direction::UP;
-	//else
-	//link.direction = Direction::DOWN;
+	if (link.m_direction == Direction::DOWN)
+	{
+		link.y = 1;
+	}
+	else
+	{
+		link.y = m_height - 2;
+	}
+	
+	
 
 	room = new char* [m_height];
 
@@ -22,29 +28,35 @@ void Room::CreateRoom(const int& width, const int& height)
 		room[i] = new char[m_width];
 	}
 
-	for (int i = 0; i < m_width; i++)
+	for (int i = 0; i < m_height; i++)
 	{
-		for (int j = 0; j < m_height; j++)
+		for (int j = 0; j < m_width; j++)
 		{
 			if (link.x == j && link.y == i)
 			{
-				room[j][i] = (char)link.m_direction;
+				room[i][j] = (char)link.m_direction;
 			}
-				
-			else if ((i == 0 || i == (m_width - 1)) && j == m_height / 2)
+			else if (i == 0 && j == m_width / 2)
 			{
-				room[j][i] = 'P';
-			
+				if (numberOfRoom != 3)
+					room[i][j] = 'P';
+				else
+					room[i][j] = 'X';
 			}
-				
-			else if (i == 0 || i == (m_width - 1) || j == 0 || j == (m_height - 1))
+			else if (i == (m_height - 1) && j == m_width / 2)
 			{
-				room[j][i] = 'X';
+				if (numberOfRoom != 1)
+					room[i][j] = 'P';
+				else
+					room[i][j] = 'X';
+			}
+			else if (i == 0 || i == (m_height - 1) || j == 0 || j == (m_width - 1))
+			{
+				room[i][j] = 'X';
 			}
 			else
 			{
-				room[j][i] = ' ';
-				
+				room[i][j] = ' ';
 			}
 		}
 	}
@@ -52,11 +64,11 @@ void Room::CreateRoom(const int& width, const int& height)
 
 void Room::PrintRoom()
 {
-	for (int i = 0; i < m_width; i++)
+	for (int i = 0; i < m_height; i++)
 	{
-		for (int j = 0; j < m_height; j++)
+		for (int j = 0; j < m_width; j++)
 		{
-			std::cout << room[j][i] << ' ';
+			std::cout << room[i][j] << ' ';
 		}
 		std::cout << std::endl;
 	}
@@ -95,7 +107,7 @@ void Room::DestroyRoom()
 
 char Room::ReturnSquare(int height, int width)
 {
-	return room[width][height];
+	return room[height][width];
 }
 
 void Room::MoveLink(Direction key)
@@ -124,15 +136,6 @@ void Room::MoveLink(Direction key)
 		}
 		room[link.x][link.y] = (char)link.m_direction;
 	}
-}
-
-bool Room::EnterDoor(Direction key)
-{
-	if (CheckMovement(key) == 'P')
-		return true;
-
-	return false;
-
 }
 
 Player Room::GetLink()

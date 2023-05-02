@@ -3,37 +3,42 @@
 Game::Game()
 {
 	currentScene = Scene::CLASSROOM;
+	room.link.m_direction = Direction::UP;
 }
 
 void Game::Input(Direction& key)
 {
+	EnterDoor(key);
 	room.MoveLink(key);
 	key = Direction::BUG;
 }
 
-int Game::ReadFile(int numberToRead)
+int* Game::ReadFile(int lineToRead)
 {
-	int i = 0, aux;
-	int* arrayNum = new int[numberToRead];
+	std::string width;
+	std::string height;
+	int size[2];
 
 	std::ifstream roomInfo("config.txt");
 	if (roomInfo.is_open())
 	{
-		while (roomInfo >> aux)
+		for (int i = 0; i < lineToRead; i++)
 		{
-			arrayNum[i++] = aux;
+			std::getline(roomInfo, width, ';');
+			std::getline(roomInfo, height, ';');
 		}
+
 		roomInfo.close();
 	}
-
-	int num = arrayNum[numberToRead - 1];
-	//delete[] arrayNum;
-	//arrayNum = nullptr;
-	return num;
+	
+	size[0] = stoi(width);
+	size[1] = stoi(height);
+	return size;
 }
 
 void Game::GameManager()
 {
+	int* roomSize;
 	switch (currentScene)
 	{
 	case Scene::START:
@@ -41,15 +46,21 @@ void Game::GameManager()
 		break;
 
 	case Scene::CLASSROOM:
-		room.CreateRoom(ReadFile(1), ReadFile(2));
+		roomSize = ReadFile(1);
+		room.CreateRoom(roomSize[0], roomSize[1], 1);
+		roomSize = nullptr;
 		break;
 
 	case Scene::HALLWAY:
-		room.CreateRoom(ReadFile(3), ReadFile(4));
+		roomSize = ReadFile(2);
+		room.CreateRoom(roomSize[0], roomSize[1], 2);
+		roomSize = nullptr;
 		break;
 
 	case Scene::CAFE:
-		room.CreateRoom(ReadFile(5), ReadFile(6));
+		roomSize = ReadFile(3);
+		room.CreateRoom(roomSize[0], roomSize[1], 3);
+		roomSize = nullptr;
 		break;
 
 	case Scene::GAMEOVER:
@@ -61,13 +72,11 @@ void Game::GameManager()
 	}
 }
 
-void Game::Play(Direction key)
+void Game::EnterDoor(Direction key)
 {
-	room.PrintRoom();
-
-	if (room.EnterDoor(key))
+	if (room.CheckMovement(key) == 'P')
 	{
-		if (room.link.y <= 1)
+		if (room.link.m_direction == Direction::UP)
 		{
 			NextScene();
 		}
@@ -77,8 +86,6 @@ void Game::Play(Direction key)
 		}
 		system("cls");
 	}
-	room.MoveLink(key);
-	system("cls");
 }
 
 void Game::Start()
