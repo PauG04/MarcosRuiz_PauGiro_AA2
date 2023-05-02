@@ -19,6 +19,10 @@ public:
 	Direction m_direction;
 
 public:
+	void MoveUp();
+	void MoveDown();
+	void MoveRight();
+	void MoveLeft();
 
 	friend class Room;
 };

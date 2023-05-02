@@ -113,20 +113,16 @@ void Room::MoveLink(Direction key)
 		switch (key)
 		{
 		case Direction::UP:
-			link.y -= 1;
-			link.m_direction = Direction::UP;
+			link.MoveUp();
 			break;
 		case Direction::DOWN:
-			link.y += 1;
-			link.m_direction = Direction::DOWN;
+			link.MoveDown();
 			break;
 		case Direction::LEFT:
-			link.x -= 1;
-			link.m_direction = Direction::LEFT;
+			link.MoveLeft();
 			break;
 		case Direction::RIGHT:
-			link.x += 1;
-			link.m_direction = Direction::RIGHT;
+			link.MoveRight();
 			break;
 		}
 		room[link.x][link.y] = (char)link.m_direction;
