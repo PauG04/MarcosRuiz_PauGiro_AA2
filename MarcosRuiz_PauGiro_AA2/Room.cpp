@@ -7,9 +7,6 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 	m_height = height;
 
 	link.x = m_width / 2;
-	link.y = m_height - 2;
-
-	
 	if (link.m_direction == Direction::DOWN)
 	{
 		link.y = 1;
@@ -18,8 +15,6 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 	{
 		link.y = m_height - 2;
 	}
-	
-	
 
 	room = new char* [m_height];
 
@@ -107,7 +102,7 @@ void Room::DestroyRoom()
 
 char Room::ReturnSquare(int height, int width)
 {
-	return room[width][height];
+	return room[height][width];
 }
 
 void Room::MoveLink(Direction key)
