@@ -107,7 +107,7 @@ void Room::DestroyRoom()
 
 char Room::ReturnSquare(int height, int width)
 {
-	return room[height][width];
+	return room[width][height];
 }
 
 void Room::MoveLink(Direction key)
