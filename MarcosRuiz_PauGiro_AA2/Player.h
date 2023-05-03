@@ -2,6 +2,7 @@
 #include <iostream>
 #include <windows.h>
 
+
 enum class Direction
 {
 	UP = '^',
