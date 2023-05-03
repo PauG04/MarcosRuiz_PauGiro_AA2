@@ -76,7 +76,7 @@ void Game::EnterDoor(Direction key)
 {
 	if (room.CheckMovement(key) == 'P')
 	{
-		if (room.link.m_direction == Direction::UP)
+		if (key == Direction::UP)
 		{
 			NextScene();
 		}

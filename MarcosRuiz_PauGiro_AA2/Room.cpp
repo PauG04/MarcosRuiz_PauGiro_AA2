@@ -109,7 +109,7 @@ void Room::MoveLink(Direction key)
 {
 	if (CheckMovement(key) == ' ')
 	{
-		room[link.x][link.y] = ' ';
+		room[link.y][link.x] = ' ';
 		switch (key)
 		{
 		case Direction::UP:
@@ -125,8 +125,26 @@ void Room::MoveLink(Direction key)
 			link.MoveRight();
 			break;
 		}
-		room[link.x][link.y] = (char)link.m_direction;
 	}
+	else
+	{
+		switch (key)
+		{
+		case Direction::UP:
+			link.m_direction = Direction::UP;
+			break;
+		case Direction::DOWN:
+			link.m_direction = Direction::DOWN;
+			break;
+		case Direction::LEFT:
+			link.m_direction = Direction::LEFT;
+			break;
+		case Direction::RIGHT:
+			link.m_direction = Direction::RIGHT;
+			break;
+		}
+	}
+	room[link.y][link.x] = (char)link.m_direction;
 }
 
 Player Room::GetLink()
