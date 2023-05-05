@@ -7,6 +7,9 @@ private:
 	char** room;
 	int m_width;
 	int m_height;
+	const std::string player = "\x1b[32m"; //green
+	const std::string wall = "\x1b[37m"; //grey
+	const std::string door = "\x1b[31m"; //red
 
 	Player link;
 	

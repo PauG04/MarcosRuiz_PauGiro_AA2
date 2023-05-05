@@ -22,21 +22,18 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 	{
 		room[i] = new char[m_width];
 	}
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	for (int i = 0; i < m_height; i++)
 	{
 		for (int j = 0; j < m_width; j++)
 		{
 			if (link.x == j && link.y == i)
 			{
-			
-				SetConsoleTextAttribute(hConsole, 2);
+
 				room[i][j] = (char)link.m_direction;
 			}
 			else if (i == 0 && j == m_width / 2)
 			{
 				
-				SetConsoleTextAttribute(hConsole, 6);
 				if (numberOfRoom != 3)
 					room[i][j] = 'P';
 				else
@@ -44,8 +41,6 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 			}
 			else if (i == (m_height - 1) && j == m_width / 2)
 			{
-				
-				SetConsoleTextAttribute(hConsole, 6);
 				if (numberOfRoom != 1)
 				
 					room[i][j] = 'P';
@@ -53,14 +48,11 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 					room[i][j] = 'X';
 			}
 			else if (i == 0 || i == (m_height - 1) || j == 0 || j == (m_width - 1))
-			{
-			
-				SetConsoleTextAttribute(hConsole, 6);
+			{	
 				room[i][j] = 'X';
 			}
 			else
 			{
-				SetConsoleTextAttribute(hConsole, 7);
 				room[i][j] = ' ';
 			}
 		}
@@ -73,7 +65,19 @@ void Room::PrintRoom()
 	{
 		for (int j = 0; j < m_width; j++)
 		{
-			std::cout << room[i][j] << ' ';
+			if (link.x == j && link.y == i)
+			{
+				std::cout <<player<< room[i][j] << ' ';
+			}
+			else if (room[i][j] == 'P')
+			{
+				std::cout << door << room[i][j] << ' ';
+			}
+			else
+			{
+				std::cout <<wall<< room[i][j] << ' ';
+			}
+			
 		}
 		std::cout << std::endl;
 	}
