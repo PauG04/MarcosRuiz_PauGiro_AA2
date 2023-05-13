@@ -2,7 +2,7 @@
 
 Game::Game()
 {
-	currentScene = Scene::CLASSROOM;
+	currentScene = Scene::INIT_GAME;
 	room.link.m_direction = Direction::UP;
 }
 
@@ -41,8 +41,12 @@ void Game::GameManager()
 	int* roomSize;
 	switch (currentScene)
 	{
-	case Scene::START:
-		Start();
+	case Scene::INIT_GAME:
+		InitGame();
+		break;
+
+	case Scene::MENU:
+		Menu();
 		break;
 
 	case Scene::CLASSROOM:
@@ -88,15 +92,54 @@ void Game::EnterDoor(Direction key)
 	}
 }
 
-void Game::Start()
+void Game::InitGame()
 {
-	std::string startGame;
-	std::cout << "Type something to start: ";
-	std::cin >> startGame;
-	currentScene = (Scene)((int)currentScene + 1);
+	HANDLE console_color;
+	console_color = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(console_color, 32);
+
+	std::cout << "************************************************************" << std::endl;
+	std::cout << "** THE  LEGEND  OF  ZELDA:  TEARS  OF  THE  ENTI  KINGDOM **" << std::endl;
+	std::cout << "************************************************************" << std::endl;
+
+	Sleep(3000);
+	SetConsoleTextAttribute(console_color, 15);
 	system("cls");
+	NextScene();
 }
 
+void Game::Menu()
+{
+	bool playButton = true;
+	char button1 = ' ';
+	char button2 = ' ';
+
+	HANDLE console_color;
+	console_color = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(console_color, 32);
+
+	std::cout << "************************************************************" << std::endl;
+	std::cout << "************************ MAIN  MENU ************************" << std::endl;
+	std::cout << "************************************************************" << std::endl;
+	
+	SetConsoleTextAttribute(console_color, 15);
+
+	if (playButton)
+	{
+		button1 = '>';
+		button2 = ' ';
+	}
+	else
+	{
+		button1 = ' ';
+		button2 = '>';
+	}
+	
+
+	std::cout << "                     " << button1 <<" 0. Play Game" << std::endl;
+	std::cout << "                     " << button2 <<" 1. Exit" << std::endl;
+
+}
 
 void Game::GameOver()
 {

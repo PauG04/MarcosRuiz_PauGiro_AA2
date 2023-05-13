@@ -5,7 +5,8 @@
 
 enum class Scene
 {
-	START,
+	INIT_GAME,
+	MENU,
 	CLASSROOM,
 	HALLWAY,
 	CAFE,
@@ -25,7 +26,9 @@ public:
 
 	void EnterDoor(Direction key);
 
-	void Start();
+	void InitGame();
+
+	void Menu();
 
 	void GameOver();
 
