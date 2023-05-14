@@ -19,11 +19,11 @@ public:
 
 	void PrintRoom();
 
-	char CheckMovement(Direction key);
+	char CheckMovement(const InputKey& key);
 
 	void DestroyRoom();
 
-	void MoveLink(Direction key);
+	void MoveLink(const InputKey& key);
 
 	char ReturnSquare(int height, int width);
 

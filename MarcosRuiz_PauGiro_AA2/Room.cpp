@@ -83,20 +83,20 @@ void Room::PrintRoom()
 	}
 }
 
-char Room::CheckMovement(Direction key)
+char Room::CheckMovement(const InputKey& key)
 {
 	switch (key)
 	{
-	case Direction::UP:
+	case InputKey::K_UP:
 		return ReturnSquare(link.y - 1, link.x);
 		break;
-	case Direction::DOWN:
+	case InputKey::K_DOWN:
 		return ReturnSquare(link.y + 1, link.x);
 		break;
-	case Direction::LEFT:
+	case InputKey::K_LEFT:
 		return ReturnSquare(link.y, link.x - 1);
 		break;
-	case Direction::RIGHT:
+	case InputKey::K_RIGHT:
 		return ReturnSquare(link.y, link.x + 1);
 		break;
 	default:
@@ -119,23 +119,26 @@ char Room::ReturnSquare(int height, int width)
 	return room[height][width];
 }
 
-void Room::MoveLink(Direction key)
+void Room::MoveLink(const InputKey& key)
 {
 	if (CheckMovement(key) == ' ')
 	{
 		room[link.y][link.x] = ' ';
 		switch (key)
 		{
-		case Direction::UP:
+		case InputKey::K_UP:
 			link.MoveUp();
 			break;
-		case Direction::DOWN:
+		case InputKey::K_DOWN:
 			link.MoveDown();
 			break;
-		case Direction::LEFT:
+		case InputKey::K_LEFT:
 			link.MoveLeft();
 			break;
-		case Direction::RIGHT:
+		case InputKey::K_RIGHT:
+			link.MoveRight();
+			break;
+		case InputKey::K_SPACE:
 			link.MoveRight();
 			break;
 		}
@@ -144,16 +147,16 @@ void Room::MoveLink(Direction key)
 	{
 		switch (key)
 		{
-		case Direction::UP:
+		case InputKey::K_UP:
 			link.m_direction = Direction::UP;
 			break;
-		case Direction::DOWN:
+		case InputKey::K_DOWN:
 			link.m_direction = Direction::DOWN;
 			break;
-		case Direction::LEFT:
+		case InputKey::K_LEFT:
 			link.m_direction = Direction::LEFT;
 			break;
-		case Direction::RIGHT:
+		case InputKey::K_RIGHT:
 			link.m_direction = Direction::RIGHT;
 			break;
 		}

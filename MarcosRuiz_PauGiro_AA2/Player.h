@@ -1,4 +1,5 @@
 #pragma once
+#include "Input.h"
 #include <iostream>
 #include <windows.h>
 
@@ -9,8 +10,6 @@ enum class Direction
 	DOWN = 'v',
 	LEFT = '<',
 	RIGHT = '>',
-	BUG,
-	ESCAPE
 };
 
 class Player

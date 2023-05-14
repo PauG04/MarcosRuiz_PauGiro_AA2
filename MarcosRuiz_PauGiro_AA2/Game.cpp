@@ -6,11 +6,13 @@ Game::Game()
 	room.link.m_direction = Direction::UP;
 }
 
-void Game::Input(Direction& key)
+void Game::Input(const InputKey& key)
 {
-	EnterDoor(key);
-	room.MoveLink(key);
-	key = Direction::BUG;
+	if (currentScene == Scene::CLASSROOM || currentScene == Scene::HALLWAY || currentScene == Scene::CAFE)
+	{
+		EnterDoor(key);
+		room.MoveLink(key);
+	}
 }
 
 int* Game::ReadFile(int lineToRead)
@@ -36,7 +38,7 @@ int* Game::ReadFile(int lineToRead)
 	return size;
 }
 
-void Game::GameManager()
+void Game::GameManager(const InputKey& key)
 {
 	int* roomSize;
 	switch (currentScene)
@@ -46,7 +48,7 @@ void Game::GameManager()
 		break;
 
 	case Scene::MENU:
-		Menu();
+		Menu(key);
 		break;
 
 	case Scene::CLASSROOM:
@@ -76,11 +78,11 @@ void Game::GameManager()
 	}
 }
 
-void Game::EnterDoor(Direction key)
+void Game::EnterDoor(const InputKey& key)
 {
 	if (room.CheckMovement(key) == 'P')
 	{
-		if (key == Direction::UP)
+		if (key == InputKey::K_UP)
 		{
 			NextScene();
 		}
@@ -108,11 +110,11 @@ void Game::InitGame()
 	NextScene();
 }
 
-void Game::Menu()
+void Game::Menu(const InputKey& key)
 {
-	bool playButton = true;
-	char button1 = ' ';
-	char button2 = ' ';
+	int selectedButton = true;
+	char button1;
+	char button2;
 
 	HANDLE console_color;
 	console_color = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -124,7 +126,19 @@ void Game::Menu()
 	
 	SetConsoleTextAttribute(console_color, 15);
 
-	if (playButton)
+	if (key == InputKey::K_UP)
+		selectedButton = 1;
+	else if (key == InputKey::K_DOWN)
+		selectedButton = 2;
+	else if (key == InputKey::K_SPACE && selectedButton == 1)
+	{
+		NextScene();
+		return;
+	}
+	else if (key == InputKey::K_SPACE)
+		exit(0);
+
+	if (selectedButton == 1)
 	{
 		button1 = '>';
 		button2 = ' ';

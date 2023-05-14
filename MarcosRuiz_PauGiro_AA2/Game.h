@@ -22,13 +22,13 @@ private:
 public:
 	Game();
 
-	void GameManager();
+	void GameManager(const InputKey& key);
 
-	void EnterDoor(Direction key);
+	void EnterDoor(const InputKey& key);
 
 	void InitGame();
 
-	void Menu();
+	void Menu(const InputKey& key);
 
 	void GameOver();
 
@@ -40,7 +40,7 @@ public:
 
 	Room* GetRoom();
 
-	void Input(Direction& key);
+	void Input(const InputKey& key);
 
 	int* ReadFile(int i);
 

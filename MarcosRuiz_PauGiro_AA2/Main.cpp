@@ -1,75 +1,66 @@
 #include "Main.h"
 
-
 int main()
 {
 	// CONFIGURATION
 	const int FPS = 60;
 	bool isPlaying = true;
-	Direction userPressedKey = Direction::BUG;
+	
+
+	bool keyboard[static_cast<int>(InputKey::COUNT)] = {};
+	InputKey userPressedKey = InputKey::INVALID;
+
 	Game game;
-	game.GameManager();
-	Scene lastScene = game.GetCurrentScene();
+	game.GameManager(userPressedKey);
+
 
 	// GAME LOOP
 	while (isPlaying)
 	{
-		game.GameManager();
-		lastScene = game.GetCurrentScene();
-		while (lastScene == game.GetCurrentScene())
-		{
-			lastScene = game.GetCurrentScene();
-			game.GetRoom()->PrintRoom();
-			while (userPressedKey == Direction::BUG)
-			{
-				if (GetAsyncKeyState(VK_UP))
-				{
-					userPressedKey = Direction::UP;
-				}
-				else if (GetAsyncKeyState(VK_DOWN))
-				{
-					userPressedKey = Direction::DOWN;
-				}
-				else if (GetAsyncKeyState(VK_LEFT))
-				{
-					userPressedKey = Direction::LEFT;
-				}
-				else if (GetAsyncKeyState(VK_RIGHT))
-				{
-					userPressedKey = Direction::RIGHT;
-				}
-				else if (GetAsyncKeyState(VK_ESCAPE))
-				{
-					userPressedKey = Direction::ESCAPE;
-				}
-			}
-			while (userPressedKey != Direction::BUG)
-			{
-				if (GetAsyncKeyState(VK_ESCAPE) == 0 && userPressedKey == Direction::ESCAPE)
-				{
-					exit(0);
-				}
-				else if (GetAsyncKeyState(VK_UP) == 0 && userPressedKey == Direction::UP)
-				{
-					game.Input(userPressedKey);
-				}
-				else if (GetAsyncKeyState(VK_DOWN) == 0 && userPressedKey == Direction::DOWN)
-				{
-					game.Input(userPressedKey);
-				}
-				else if (GetAsyncKeyState(VK_LEFT) == 0 && userPressedKey == Direction::LEFT)
-				{
-					game.Input(userPressedKey);
-				}
-				else if (GetAsyncKeyState(VK_RIGHT) == 0 && userPressedKey == Direction::RIGHT)
-				{
-					game.Input(userPressedKey);
-				}
-			}
-			Sleep(1000 / FPS);
-			system("cls");
-		}
+		// INPUT
+		keyboard[static_cast<int>(InputKey::K_ESC)] = GetAsyncKeyState(VK_ESCAPE);
+		keyboard[static_cast<int>(InputKey::K_LEFT)] = GetAsyncKeyState(VK_LEFT);
+		keyboard[static_cast<int>(InputKey::K_RIGHT)] = GetAsyncKeyState(VK_RIGHT);
+		keyboard[static_cast<int>(InputKey::K_UP)] = GetAsyncKeyState(VK_UP);
+		keyboard[static_cast<int>(InputKey::K_DOWN)] = GetAsyncKeyState(VK_DOWN);
+		keyboard[static_cast<int>(InputKey::K_SPACE)] = GetAsyncKeyState(VK_SPACE);
 		
+
+		// UPDATE
+		game.GameManager(userPressedKey);
+
+		if (keyboard[static_cast<int>(InputKey::K_ESC)])
+		{
+			userPressedKey = InputKey::K_ESC;
+		}
+		else if (keyboard[static_cast<int>(InputKey::K_LEFT)])
+		{
+			userPressedKey = InputKey::K_LEFT;
+		}
+		else if (keyboard[static_cast<int>(InputKey::K_RIGHT)])
+		{
+			userPressedKey = InputKey::K_RIGHT;
+		}
+		else if (keyboard[static_cast<int>(InputKey::K_UP)])
+		{
+			userPressedKey = InputKey::K_UP;
+		}
+		else if (keyboard[static_cast<int>(InputKey::K_DOWN)])
+		{
+			userPressedKey = InputKey::K_DOWN;
+		}
+		else if (keyboard[static_cast<int>(InputKey::K_SPACE)])
+		{
+			userPressedKey = InputKey::K_SPACE;
+		}
+
+		// RENDER
+		game.Input(userPressedKey);
+
+
+		// FRAME CONTROL
+		Sleep(1000/FPS);
+		system("cls");
 	}
 
 	return 0;
