@@ -3,7 +3,7 @@
 int main()
 {
 	// CONFIGURATION
-	const int FPS = 60;
+	const int FPS = 20;
 	bool isPlaying = true;
 	
 
@@ -11,56 +11,92 @@ int main()
 	InputKey userPressedKey = InputKey::INVALID;
 
 	Game game;
-	game.GameManager(userPressedKey);
+	game.GameManager();
+	Scene lastScene = game.GetCurrentScene();
 
+	int lastSelectedButton = 1;
 
 	// GAME LOOP
 	while (isPlaying)
 	{
-		// INPUT
-		keyboard[static_cast<int>(InputKey::K_ESC)] = GetAsyncKeyState(VK_ESCAPE);
-		keyboard[static_cast<int>(InputKey::K_LEFT)] = GetAsyncKeyState(VK_LEFT);
-		keyboard[static_cast<int>(InputKey::K_RIGHT)] = GetAsyncKeyState(VK_RIGHT);
-		keyboard[static_cast<int>(InputKey::K_UP)] = GetAsyncKeyState(VK_UP);
-		keyboard[static_cast<int>(InputKey::K_DOWN)] = GetAsyncKeyState(VK_DOWN);
-		keyboard[static_cast<int>(InputKey::K_SPACE)] = GetAsyncKeyState(VK_SPACE);
+		game.GameManager();
+		lastScene = game.GetCurrentScene();
+
+		while (lastScene == game.GetCurrentScene())
+		{
+			// INPUT
+			keyboard[static_cast<int>(InputKey::K_ESC)] = GetAsyncKeyState(VK_ESCAPE);
+			keyboard[static_cast<int>(InputKey::K_LEFT)] = GetAsyncKeyState(VK_LEFT);
+			keyboard[static_cast<int>(InputKey::K_RIGHT)] = GetAsyncKeyState(VK_RIGHT);
+			keyboard[static_cast<int>(InputKey::K_UP)] = GetAsyncKeyState(VK_UP);
+			keyboard[static_cast<int>(InputKey::K_DOWN)] = GetAsyncKeyState(VK_DOWN);
+			keyboard[static_cast<int>(InputKey::K_SPACE)] = GetAsyncKeyState(VK_SPACE);
+
+
+			// UPDATE
+			lastScene == game.GetCurrentScene();
+
+			if (keyboard[static_cast<int>(InputKey::K_ESC)])
+			{
+				exit(0);
+			}
+			else if (keyboard[static_cast<int>(InputKey::K_LEFT)])
+			{
+				userPressedKey = InputKey::K_LEFT;
+			}
+			else if (keyboard[static_cast<int>(InputKey::K_RIGHT)])
+			{
+				userPressedKey = InputKey::K_RIGHT;
+			}
+			else if (keyboard[static_cast<int>(InputKey::K_UP)])
+			{
+				userPressedKey = InputKey::K_UP;
+			}
+			else if (keyboard[static_cast<int>(InputKey::K_DOWN)])
+			{
+				userPressedKey = InputKey::K_DOWN;
+			}
+			else if (keyboard[static_cast<int>(InputKey::K_SPACE)])
+			{
+				userPressedKey = InputKey::K_SPACE;
+			}
+
+			// RENDER
+			game.Input(userPressedKey);
+
+			switch (game.GetCurrentScene())
+			{
+			case Scene::INIT_GAME:
+				game.InitGame();
+				break;
+			case Scene::MENU:
+				if (game.Menu(userPressedKey, lastSelectedButton))
+					exit(0);
+				break;
+			case Scene::CLASSROOM:
+				game.GetRoom()->PrintRoom();
+				break;
+			case Scene::HALLWAY:
+				game.GetRoom()->PrintRoom();
+				break;
+			case Scene::CAFE:
+				game.GetRoom()->PrintRoom();
+				break;
+			case Scene::GAMEOVER:
+				break;
+			default:
+				break;
+			}
+
+
+			// FRAME CONTROL
+			Sleep(1000 / FPS);
+			system("cls");
+
+			// RESET
+			userPressedKey = InputKey::INVALID;
+		}
 		
-
-		// UPDATE
-		game.GameManager(userPressedKey);
-
-		if (keyboard[static_cast<int>(InputKey::K_ESC)])
-		{
-			userPressedKey = InputKey::K_ESC;
-		}
-		else if (keyboard[static_cast<int>(InputKey::K_LEFT)])
-		{
-			userPressedKey = InputKey::K_LEFT;
-		}
-		else if (keyboard[static_cast<int>(InputKey::K_RIGHT)])
-		{
-			userPressedKey = InputKey::K_RIGHT;
-		}
-		else if (keyboard[static_cast<int>(InputKey::K_UP)])
-		{
-			userPressedKey = InputKey::K_UP;
-		}
-		else if (keyboard[static_cast<int>(InputKey::K_DOWN)])
-		{
-			userPressedKey = InputKey::K_DOWN;
-		}
-		else if (keyboard[static_cast<int>(InputKey::K_SPACE)])
-		{
-			userPressedKey = InputKey::K_SPACE;
-		}
-
-		// RENDER
-		game.Input(userPressedKey);
-
-
-		// FRAME CONTROL
-		Sleep(1000/FPS);
-		system("cls");
 	}
 
 	return 0;

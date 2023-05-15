@@ -38,17 +38,15 @@ int* Game::ReadFile(int lineToRead)
 	return size;
 }
 
-void Game::GameManager(const InputKey& key)
+void Game::GameManager()
 {
 	int* roomSize;
 	switch (currentScene)
 	{
 	case Scene::INIT_GAME:
-		InitGame();
 		break;
 
 	case Scene::MENU:
-		Menu(key);
 		break;
 
 	case Scene::CLASSROOM:
@@ -110,9 +108,9 @@ void Game::InitGame()
 	NextScene();
 }
 
-void Game::Menu(const InputKey& key)
+bool Game::Menu(const InputKey& key, int& last)
 {
-	int selectedButton = true;
+	int selectedButton = last;
 	char button1;
 	char button2;
 
@@ -130,13 +128,15 @@ void Game::Menu(const InputKey& key)
 		selectedButton = 1;
 	else if (key == InputKey::K_DOWN)
 		selectedButton = 2;
-	else if (key == InputKey::K_SPACE && selectedButton == 1)
+	else if (key == InputKey::K_SPACE && selectedButton == 2)
+		return true;
+	else if (key == InputKey::K_SPACE)
 	{
 		NextScene();
-		return;
+		return false;
 	}
-	else if (key == InputKey::K_SPACE)
-		exit(0);
+		
+	last = selectedButton;
 
 	if (selectedButton == 1)
 	{
@@ -149,10 +149,10 @@ void Game::Menu(const InputKey& key)
 		button2 = '>';
 	}
 	
-
 	std::cout << "                     " << button1 <<" 0. Play Game" << std::endl;
 	std::cout << "                     " << button2 <<" 1. Exit" << std::endl;
 
+	return false;
 }
 
 void Game::GameOver()

@@ -159,6 +159,8 @@ void Room::MoveLink(const InputKey& key)
 		case InputKey::K_RIGHT:
 			link.m_direction = Direction::RIGHT;
 			break;
+		default:
+			return;
 		}
 	}
 	room[link.y][link.x] = (char)link.m_direction;

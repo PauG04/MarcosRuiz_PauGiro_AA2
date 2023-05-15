@@ -22,13 +22,13 @@ private:
 public:
 	Game();
 
-	void GameManager(const InputKey& key);
+	void GameManager();
 
 	void EnterDoor(const InputKey& key);
 
 	void InitGame();
 
-	void Menu(const InputKey& key);
+	bool Menu(const InputKey& key, int& last);
 
 	void GameOver();
 
