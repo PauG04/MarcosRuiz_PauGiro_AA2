@@ -12,6 +12,10 @@ private:
 	const std::string player = "\x1b[32m"; //green
 	const std::string wall = "\x1b[37m"; //grey
 	const std::string door = "\x1b[31m"; //red
+	const std::string rupia1 = "\x1b[32m"; //green
+	const std::string rupia2 = "\x1b[36m"; //blue
+	const std::string rupia3 = "\x1b[31m"; //red
+	const std::string potColor = "\x1b[33m"; //yellow
 
 	Player link;
 	Pot pot[];

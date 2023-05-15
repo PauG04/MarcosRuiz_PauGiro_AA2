@@ -6,7 +6,7 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 	m_width = width;
 	m_height = height;
 	
-	pot->potSize = 3;
+	pot->potSize = 1;
 	
 
 	link.x = m_width / 2;
@@ -20,8 +20,9 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 	}
 	for (int k = 0; k < pot->potSize; k++)
 	{
-		pot[k].x = rand() % ((m_width - 3) - 1 + 1) + 1;
-		pot[k].y = rand() % ((m_height - 3) - 1 + 1) + 1;		
+		pot[k].x = rand() % ((m_width - 2) - 1 + 1) + 1;
+		pot[k].y = rand() % ((m_height - 2) - 1 + 1) + 1;	
+		pot[k].value = rand() % 3;
 	}
 	room = new char* [m_height];
 
@@ -42,7 +43,7 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 			else if (pot[pots].x == j && pot[pots].y == i)
 			{
 				room[i][j] = 'O';	
-				pots++;
+				pots++;			
 			}
 			else if (i == 0 && j == m_width / 2)
 			{
@@ -86,6 +87,22 @@ void Room::PrintRoom()
 			{
 				std::cout << door << room[i][j] << ' ';
 			}
+			else if (room[i][j] == 'O')
+			{
+				std::cout << potColor << room[i][j] << ' ';
+			}
+			else if (room[i][j] == '$')
+			{
+				std::cout << rupia1 << room[i][j] << ' ';
+			}
+			else if (room[i][j] == '#')
+			{
+				std::cout << rupia2 << room[i][j] << ' ';
+			}
+			else if (room[i][j] == '&')
+			{
+				std::cout << rupia3 << room[i][j] << ' ';
+			}
 			else
 			{
 				std::cout <<wall<< room[i][j] << ' ';
@@ -94,6 +111,9 @@ void Room::PrintRoom()
 		}
 		std::cout << std::endl;
 	}
+	std::cout << std::endl;
+	std::cout << "Hearts: " << link.hearts << "     " << "Rupias: " << link.rupias;
+
 }
 
 char Room::CheckMovement(const InputKey& key)
@@ -134,9 +154,15 @@ char Room::ReturnSquare(int height, int width)
 
 void Room::MoveLink(const InputKey& key)
 {
-	if (CheckMovement(key) == ' ')
+	if (CheckMovement(key) == ' ' || CheckMovement(key) == '$' || CheckMovement(key) == '#' || CheckMovement(key) == '&')
 	{
 		room[link.y][link.x] = ' ';
+		if (CheckMovement(key) == '$')
+			link.rupias += 1;
+		else if (CheckMovement(key) == '#')
+			link.rupias += 5;
+		else if (CheckMovement(key) == '&')
+			link.rupias += 20;
 		switch (key)
 		{
 		case InputKey::K_UP:
@@ -155,6 +181,73 @@ void Room::MoveLink(const InputKey& key)
 			link.MoveRight();
 			break;
 		}
+	}
+	 if (key == InputKey::K_SPACE)
+	{
+		switch (link.m_direction)
+		{
+		case Direction::UP:
+			if (ReturnSquare(link.y -1, link.x) == 'O')
+				if (pot->value == 1)
+				{
+					room[link.y - 1][link.x] = '$';
+				}
+				else if (pot->value == 2)
+				{
+					room[link.y - 1][link.x] = '#';
+				}
+				else
+				{
+					room[link.y - 1][link.x] = '&';
+				}			
+			break;
+		case Direction::DOWN:
+			if (ReturnSquare(link.y +1, link.x)== 'O')
+				if (pot->value == 1)
+				{
+					room[link.y + 1][link.x] = '$';
+				}
+				else if (pot->value == 2)
+				{
+					room[link.y + 1][link.x] = '#';
+				}
+				else
+				{
+					room[link.y + 1][link.x] = '$';
+				}			
+			break;
+		case Direction::LEFT:
+			if (ReturnSquare(link.y, link.x-1)== 'O')
+				if (pot->value == 1)
+				{
+					room[link.y][link.x - 1] = '$';
+				}
+				else if (pot->value == 2)
+				{
+					room[link.y][link.x - 1] = '#';
+				}
+				else
+				{
+					room[link.y][link.x - 1] = '&';
+				}
+			break;
+		case Direction::RIGHT:
+			if (ReturnSquare(link.y, link.x+1) == 'O')
+				if (pot->value == 1)
+				{
+					room[link.y][link.x + 1] = '$';
+				}
+				else if (pot->value == 2)
+				{
+					room[link.y][link.x + 1] = '#';
+				}
+				else
+				{
+					room[link.y][link.x + 1] = '&';
+				}
+			break;
+		}
+	
 	}
 	else
 	{
