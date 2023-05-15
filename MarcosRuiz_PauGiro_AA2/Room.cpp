@@ -5,6 +5,9 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 	
 	m_width = width;
 	m_height = height;
+	
+	pot->potSize = 3;
+	
 
 	link.x = m_width / 2;
 	if (link.m_direction == Direction::DOWN)
@@ -15,7 +18,11 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 	{
 		link.y = m_height - 2;
 	}
-
+	for (int k = 0; k < pot->potSize; k++)
+	{
+		pot[k].x = rand() % ((m_width - 3) - 1 + 1) + 1;
+		pot[k].y = rand() % ((m_height - 3) - 1 + 1) + 1;		
+	}
 	room = new char* [m_height];
 
 	for (int i = 0; i < m_height; i++)
@@ -26,10 +33,16 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 	{
 		for (int j = 0; j < m_width; j++)
 		{
+			
 			if (link.x == j && link.y == i)
 			{
 
 				room[i][j] = (char)link.m_direction;
+			}
+			else if (pot[pots].x == j && pot[pots].y == i)
+			{
+				room[i][j] = 'O';	
+				pots++;
 			}
 			else if (i == 0 && j == m_width / 2)
 			{
@@ -56,7 +69,7 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 				room[i][j] = ' ';
 			}
 		}
-	}
+	}		 
 }
 
 void Room::PrintRoom()
