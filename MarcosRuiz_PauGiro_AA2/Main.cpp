@@ -83,11 +83,12 @@ int main()
 				game.GetRoom()->PrintRoom();
 				break;
 			case Scene::GAMEOVER:
+				game.GameOver(true); //depende de si ganas o no, creo q mejor q llamarlo aqui lo llamamos cuando matas a ganon o si te matan
+				exit(0);
 				break;
 			default:
 				break;
 			}
-
 
 			// FRAME CONTROL
 			Sleep(1000 / FPS);

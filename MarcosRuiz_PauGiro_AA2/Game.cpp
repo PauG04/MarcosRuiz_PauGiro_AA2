@@ -68,7 +68,6 @@ void Game::GameManager()
 		break;
 
 	case Scene::GAMEOVER:
-		GameOver();
 		break;
 
 	default:
@@ -155,9 +154,35 @@ bool Game::Menu(const InputKey& key, int& last)
 	return false;
 }
 
-void Game::GameOver()
+void Game::GameOver(bool win)
 {
+	HANDLE console_color;
+	console_color = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(console_color, 32);
 
+	std::string messageGameOver;
+	std::string messageGameOver2;
+	if (win)
+	{
+		messageGameOver = "YOU WIN!";
+		messageGameOver2 = "YOU HAVE DEFEATED GANON! YOU'LL BE SAFE, AT LEAST FOR THIS YEAR...";
+	}
+	else
+	{
+		messageGameOver = "YOU LOSE";
+		messageGameOver2 = "GANON";
+	}
+
+	std::cout << "************************************************************" << std::endl;
+	std::cout << "************************ " << messageGameOver << " **************************" << std::endl;
+	std::cout << "************************************************************" << std::endl;
+
+	SetConsoleTextAttribute(console_color, 15);
+
+	std::cout << std::endl << messageGameOver2 << std::endl << std::endl;
+	std::cout << "A GAME MADE BY PAU GIRO & MARCOS RUIZ";
+
+	Sleep(5000);
 }
 
 void Game::NextScene()

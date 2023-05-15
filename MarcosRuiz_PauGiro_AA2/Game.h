@@ -30,7 +30,7 @@ public:
 
 	bool Menu(const InputKey& key, int& last);
 
-	void GameOver();
+	void GameOver(bool win);
 
 	void NextScene();
 
