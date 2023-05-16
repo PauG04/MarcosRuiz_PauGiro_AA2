@@ -3,6 +3,7 @@
 int main()
 {
 	// CONFIGURATION
+	srand(time(NULL));
 	const int FPS = 20;
 	bool isPlaying = true;
 	

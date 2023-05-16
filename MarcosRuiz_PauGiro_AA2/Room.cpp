@@ -1,12 +1,17 @@
 #include "Room.h"
 
+int Room::RandomNumber(int max, int min)
+{
+	return rand() % ((max)-1 + 1) + 1;
+}
+
 void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 {
 	
 	m_width = width;
 	m_height = height;
-	
-	pot->potSize = 3;
+	m_potSize = 3;	
+	pot = new Pot[m_potSize];
 	int pots = 0;
 
 	link.x = m_width / 2;
@@ -18,11 +23,24 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 	{
 		link.y = m_height - 2;
 	}
-	for (int k = 0; k < pot->potSize; k++)
+	for (int k = 0; k < m_potSize; k++)
 	{
-		pot[k].x = rand() % ((m_width - 2) - 1 + 1) + 1;
-		pot[k].y = rand() % ((m_height - 2) - 1 + 1) + 1;	
-		pot[k].value = rand() % (3-1+1)+1;
+		pot[k].x = RandomNumber(m_width-2,1);
+		pot[k].y = RandomNumber(m_height - 2, 1);
+		pot[k].value = RandomNumber(3, 1);
+		while ((pot[k].x == link.x && pot[k].y == link.y))
+		{
+			pot[k].x = RandomNumber(m_width - 2, 1);
+			pot[k].y = RandomNumber(m_height - 2, 1);
+		}
+		for (int i = 0; i < k; i++)
+		{
+			while (pot[k].x == pot[i].x && pot[k].y == pot[i].y)
+			{
+				pot[k].x = RandomNumber(m_width - 2, 1);
+				pot[k].y = RandomNumber(m_height - 2, 1);
+			}
+		}
 	}
 	room = new char* [m_height];
 
@@ -34,7 +52,7 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 	{
 		for (int j = 0; j < m_width; j++)
 		{
-			for (int k = 0; k < pot->potSize; k++)
+			for (int k = 0; k < m_potSize; k++)
 			{
 				if (pot[k].x == j && pot[k].y == i)
 				{
@@ -151,6 +169,13 @@ void Room::DestroyRoom()
 	room = nullptr;
 }
 
+void Room::DestroyPot()
+{
+	delete[] pot;
+	pot = nullptr;
+	
+}
+
 char Room::ReturnSquare(int height, int width)
 {
 	return room[height][width];
@@ -193,7 +218,7 @@ void Room::MoveLink(const InputKey& key)
 		case Direction::UP:
 			if (ReturnSquare(link.y - 1, link.x) == 'O')
 			{
-				for (int k = 0; k < pot->potSize; k++)
+				for (int k = 0; k < m_potSize; k++)
 				{
 					if (ReturnSquare(pot[k].y + 1, pot[k].x) == '^')
 					{
@@ -211,7 +236,7 @@ void Room::MoveLink(const InputKey& key)
 		case Direction::DOWN:
 			if (ReturnSquare(link.y + 1, link.x) == 'O')
 			{
-				for (int k = 0; k < pot->potSize; k++)
+				for (int k = 0; k < m_potSize; k++)
 				{
 					if (ReturnSquare(pot[k].y - 1, pot[k].x) == 'v')
 					{
@@ -228,7 +253,7 @@ void Room::MoveLink(const InputKey& key)
 		case Direction::LEFT:
 			if (ReturnSquare(link.y, link.x - 1) == 'O')
 			{
-				for (int k = 0; k < pot->potSize; k++)
+				for (int k = 0; k < m_potSize; k++)
 				{
 					if (ReturnSquare(pot[k].y, pot[k].x + 1) == '<')
 					{
@@ -245,7 +270,7 @@ void Room::MoveLink(const InputKey& key)
 		case Direction::RIGHT:
 			if (ReturnSquare(link.y, link.x + 1) == 'O')
 			{
-				for (int k = 0; k < pot->potSize; k++)
+				for (int k = 0; k < m_potSize; k++)
 				{
 					if (ReturnSquare(pot[k].y, pot[k].x - 1) == '>')
 					{

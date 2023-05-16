@@ -82,10 +82,12 @@ void Game::EnterDoor(const InputKey& key)
 		if (key == InputKey::K_UP)
 		{
 			NextScene();
+			room.DestroyPot();
 		}
 		else
 		{
 			PrevScene();
+			room.DestroyPot();
 		}
 		system("cls");
 	}

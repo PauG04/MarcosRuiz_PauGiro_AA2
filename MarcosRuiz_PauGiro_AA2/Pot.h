@@ -6,6 +6,7 @@
 
 class Pot
 {
+public:
 	int x, y, potSize;
 	int value;
 

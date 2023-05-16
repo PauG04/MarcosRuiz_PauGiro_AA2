@@ -2,12 +2,14 @@
 #include "Player.h"
 #include "Pot.h"
 
+
 class Room
 {
 private:
 	char** room;
 	int m_width;
 	int m_height;
+	int m_potSize;
 	const std::string player = "\x1b[32m"; //green
 	const std::string wall = "\x1b[37m"; //grey
 	const std::string door = "\x1b[31m"; //red
@@ -17,10 +19,12 @@ private:
 	const std::string potColor = "\x1b[33m"; //yellow
 
 	Player link;
-	Pot pot[];
-	
+	Pot *pot;
+
 
 public:
+	int RandomNumber(int max, int min);
+
 	void CreateRoom(const int& width, const int& height, int numberOfRoom);
 
 	void PrintRoom();
@@ -28,6 +32,8 @@ public:
 	char CheckMovement(const InputKey& key);
 
 	void DestroyRoom();
+
+	void DestroyPot();
 
 	void MoveLink(const InputKey& key);
 
