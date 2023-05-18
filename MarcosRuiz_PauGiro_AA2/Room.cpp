@@ -5,13 +5,75 @@ int Room::RandomNumber(int max, int min)
 	return rand() % ((max)-1 + 1) + 1;
 }
 
+void Room::SetPotPosition(const int& width, const int& height, const int& size, Pot pot[], Player link)
+{
+	for (int k = 0; k < size; k++)
+	{
+		pot[k].x = RandomNumber(width - 2, 1);
+		pot[k].y = RandomNumber(height - 2, 1);
+		pot[k].value = RandomNumber(3, 1);
+		while ((pot[k].x == link.x && pot[k].y == link.y))
+		{
+			pot[k].x = RandomNumber(width - 2, 1);
+			pot[k].y = RandomNumber(height - 2, 1);
+		}
+		for (int i = 0; i < k; i++)
+		{
+			while (pot[k].x == pot[i].x && pot[k].y == pot[i].y)
+			{
+				pot[k].x = RandomNumber(width - 2, 1);
+				pot[k].y = RandomNumber(height - 2, 1);
+			}
+		}
+	}
+
+}
+
+void Room::SetEnemiesPosition(const int& width, const int& height, const int& size, Pot pot[], Player link, Enemies enemy[], const int& potSize)
+{
+	for (int k = 0; k < size; k++)
+	{
+		enemy[k].x = RandomNumber(width - 2, 1);
+		enemy[k].y = RandomNumber(height - 2, 1);
+		while ((enemy[k].x == link.x && enemy[k].y == link.y))
+		{
+			enemy[k].x = RandomNumber(width - 2, 1);
+			enemy[k].y = RandomNumber(height - 2, 1);
+		}
+		for (int i = 0; i < k; i++)
+		{
+			while (enemy[k].x == enemy[i].x && enemy[k].y == enemy[i].y)
+			{
+				enemy[k].x = RandomNumber(width - 2, 1);
+				enemy[k].y = RandomNumber(height - 2, 1);
+			}
+		}
+		for (int i = 0; i < potSize; i++)
+		{
+			while (enemy[k].x == pot[i].x && enemy[k].y == pot[i].y)
+			{
+				enemy[k].x = RandomNumber(width - 2, 1);
+				enemy[k].y = RandomNumber(height - 2, 1);
+			}
+		}
+	}
+}
+
+void Room::CreatePlayer(const int& hearts)
+{
+	link.rupias = 0;
+	link.hearts = hearts;
+}
+
 void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 {
 	
 	m_width = width;
 	m_height = height;
 	m_potSize = 3;	
+	m_enemies = 2;
 	pot = new Pot[m_potSize];
+	enemies = new Enemies[m_enemies];
 	int pots = 0;
 
 	link.x = m_width / 2;
@@ -23,25 +85,8 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 	{
 		link.y = m_height - 2;
 	}
-	for (int k = 0; k < m_potSize; k++)
-	{
-		pot[k].x = RandomNumber(m_width-2,1);
-		pot[k].y = RandomNumber(m_height - 2, 1);
-		pot[k].value = RandomNumber(3, 1);
-		while ((pot[k].x == link.x && pot[k].y == link.y))
-		{
-			pot[k].x = RandomNumber(m_width - 2, 1);
-			pot[k].y = RandomNumber(m_height - 2, 1);
-		}
-		for (int i = 0; i < k; i++)
-		{
-			while (pot[k].x == pot[i].x && pot[k].y == pot[i].y)
-			{
-				pot[k].x = RandomNumber(m_width - 2, 1);
-				pot[k].y = RandomNumber(m_height - 2, 1);
-			}
-		}
-	}
+	SetPotPosition(m_width, m_height, m_potSize, pot, link);
+	SetEnemiesPosition(m_width, m_height, m_enemies, pot, link, enemies, m_potSize);
 	room = new char* [m_height];
 
 	for (int i = 0; i < m_height; i++)
@@ -57,6 +102,14 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 				if (pot[k].x == j && pot[k].y == i)
 				{
 					room[i][j] = 'O';
+
+				}
+			}
+			for (int k = 0; k < m_enemies; k++)
+			{
+				if (enemies[k].x == j && enemies[k].y == i)
+				{
+					room[i][j] = 'J';
 
 				}
 			}
@@ -88,7 +141,7 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 			}
 			else
 			{
-				if(room[i][j] != 'O')
+				if(room[i][j] != 'O' && room[i][j] != 'J')
 				room[i][j] = ' ';
 			}
 		}
@@ -112,6 +165,10 @@ void Room::PrintRoom()
 			else if (room[i][j] == 'O')
 			{
 				std::cout << potColor << room[i][j] << ' ';
+			}
+			else if (room[i][j] == 'J')
+			{
+				std::cout << enemy << room[i][j] << ' ';
 			}
 			else if (room[i][j] == '$')
 			{
@@ -183,7 +240,7 @@ char Room::ReturnSquare(int height, int width)
 
 void Room::MoveLink(const InputKey& key)
 {
-	if (CheckMovement(key) == ' ' || CheckMovement(key) == '$' || CheckMovement(key) == '#' || CheckMovement(key) == '&')
+	if (CheckMovement(key) == ' ' || CheckMovement(key) == '$' || CheckMovement(key) == '#' || CheckMovement(key) == '&' || CheckMovement(key) == 'J')
 	{
 		room[link.y][link.x] = ' ';
 		if (CheckMovement(key) == '$')
@@ -192,6 +249,9 @@ void Room::MoveLink(const InputKey& key)
 			link.rupias += 5;
 		else if (CheckMovement(key) == '&')
 			link.rupias += 20;
+		else if (CheckMovement(key) == 'J')
+			link.hearts--;
+			
 		switch (key)
 		{
 		case InputKey::K_UP:
@@ -230,7 +290,10 @@ void Room::MoveLink(const InputKey& key)
 							room[link.y - 1][link.x] = '&';
 					}
 				}
-
+			}
+			if (ReturnSquare(link.y - 1, link.x) == 'J')
+			{
+				room[link.y - 1][link.x] = ' ';
 			}
 			break;
 		case Direction::DOWN:
@@ -249,6 +312,10 @@ void Room::MoveLink(const InputKey& key)
 					}
 				}
 			}
+			if (ReturnSquare(link.y + 1, link.x) == 'J')
+			{
+				room[link.y + 1][link.x] = ' ';
+			}
 			break;
 		case Direction::LEFT:
 			if (ReturnSquare(link.y, link.x - 1) == 'O')
@@ -266,6 +333,10 @@ void Room::MoveLink(const InputKey& key)
 					}
 				}
 			}
+			if (ReturnSquare(link.y, link.x - 1) == 'J')
+			{
+				room[link.y][link.x - 1] = ' ';
+			}
 			break;
 		case Direction::RIGHT:
 			if (ReturnSquare(link.y, link.x + 1) == 'O')
@@ -282,6 +353,10 @@ void Room::MoveLink(const InputKey& key)
 							room[link.y][link.x + 1] = '&';
 					}
 				}
+			}
+			if (ReturnSquare(link.y, link.x + 1) == 'J')
+			{
+				room[link.y][link.x + 1] = ' ';
 			}
 			break;
 		}

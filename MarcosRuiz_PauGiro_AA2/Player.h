@@ -15,7 +15,7 @@ enum class Direction
 class Player
 {
 public:
-	int x, y, rupias = 0, hearts = 5;
+	int x, y, rupias, hearts;
 	Direction m_direction;
 
 public:

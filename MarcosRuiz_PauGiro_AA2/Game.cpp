@@ -47,6 +47,7 @@ void Game::GameManager()
 		break;
 
 	case Scene::MENU:
+		room.CreatePlayer(5);
 		break;
 
 	case Scene::CLASSROOM:
