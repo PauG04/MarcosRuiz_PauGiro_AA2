@@ -72,6 +72,7 @@ void Room::CreateEnemies()
 	{
 		enemies[i].direction = RandomNumber(2, 1);
 		enemies[i].startDirection = RandomNumber(2, 1);
+		enemies[i].isAlive = true;
 	}
 }
 
@@ -283,52 +284,74 @@ void Room::MoveEnemies()
 {
 	for (int i = 0; i < m_enemies; i++)
 	{
- 		room[enemies[i].y][enemies[i].x] = ' ';
-		if (enemies[i].direction ==  1 && enemies[i].startDirection == 1)
+		if (enemies[i].isAlive)
 		{
-			if (room[enemies[i].y+1][enemies[i].x] == ' '|| enemies[i].y + 1 != link.y)
+			room[enemies[i].y][enemies[i].x] = ' ';
+			if (enemies[i].direction == 1 && enemies[i].startDirection == 1)
 			{
-				enemies[i].MoveDownE();
+				if (room[enemies[i].y + 1][enemies[i].x] == ' ' || enemies[i].y + 1 == link.y)
+				{
+					if (enemies[i].y + 1 == link.y && enemies[i].x == link.x)
+					{
+						link.hearts--;
+					}
+					enemies[i].MoveDownE();
+				}
+				else
+				{
+					enemies[i].startDirection = 2;
+				}
 			}
-			else
+			else if (enemies[i].direction == 1 && enemies[i].startDirection == 2)
 			{
-				enemies[i].startDirection = 2;
-			}	
+				if (room[enemies[i].y - 1][enemies[i].x] == ' ' || enemies[i].y - 1 == link.y)
+				{
+					if (enemies[i].y - 1 == link.y && enemies[i].x == link.x)
+					{
+						link.hearts--;
+					}
+					enemies[i].MoveUpE();
+				}
+				else
+				{
+					enemies[i].startDirection = 1;
+				}
+			}
+			else if (enemies[i].direction == 2 && enemies[i].startDirection == 1)
+			{
+				if (room[enemies[i].y][enemies[i].x + 1] == ' ' || enemies[i].x + 1 == link.x)
+				{
+					if (enemies[i].x + 1 == link.x && enemies[i].y == link.y)
+					{
+						link.hearts--;
+					}
+					enemies[i].MoveRighE();
+				}
+				else
+				{
+					enemies[i].startDirection = 2;
+				}
+			}
+			else if (enemies[i].direction == 2 && enemies[i].startDirection == 2)
+			{
+				if (room[enemies[i].y][enemies[i].x - 1] == ' ' || enemies[i].x - 1 == link.x)
+				{
+					if (enemies[i].x - 1 == link.x && enemies[i].x == link.x)
+					{
+						link.hearts--;
+					}
+					enemies[i].MoveLeftE();
+				}
+				else
+				{
+					enemies[i].startDirection = 1;
+				}
+			}
+			if (enemies[i].x != link.x && enemies[i].y != link.y)
+			{
+				room[enemies[i].y][enemies[i].x] = 'J';
+			}		
 		}
-		else if (enemies[i].direction == 1 && enemies[i].startDirection == 2)
-		{
-			if (room[enemies[i].y - 1][enemies[i].x] == ' ' || enemies[i].y - 1 != link.y)
-			{
-				enemies[i].MoveUpE();
-			}
-			else
-			{
-				enemies[i].startDirection = 1;
-			}
-		}
-		else if (enemies[i].direction == 2 && enemies[i].startDirection == 1)
-		{
-			if (room[enemies[i].y][enemies[i].x+1]== ' ' || enemies[i].x + 1 != link.x)
-			{
-				enemies[i].MoveRighE();
-			}
-			else
-			{
-				enemies[i].startDirection = 2;
-			}
-		}
-		else if (enemies[i].direction == 2 && enemies[i].startDirection == 2)
-		{
-			if (room[enemies[i].y - 1][enemies[i].x-1] == ' ' || enemies[i].x - 1 != link.x)
-			{
-				enemies[i].MoveLeftE();
-			}
-			else
-			{
-				enemies[i].startDirection = 1;
-			}
-		}
-		room[enemies[i].y][enemies[i].x] = 'J';
 	}
 }
 
@@ -388,7 +411,15 @@ void Room::MoveLink(const InputKey& key)
 			}
 			if (ReturnSquare(link.y - 1, link.x) == 'J')
 			{
-				room[link.y - 1][link.x] = ' ';
+				for (int i = 0; i < m_enemies; i++)
+				{
+					if (ReturnSquare(enemies[i].y + 1, enemies[i].x) == '^')
+					{
+						room[link.y][link.x + 1] = ' ';
+						enemies[i].isAlive = false;
+					}
+
+				}
 			}
 			break;
 		case Direction::DOWN:
@@ -409,7 +440,15 @@ void Room::MoveLink(const InputKey& key)
 			}
 			if (ReturnSquare(link.y + 1, link.x) == 'J')
 			{
-				room[link.y + 1][link.x] = ' ';
+				for (int i = 0; i < m_enemies; i++)
+				{
+					if (ReturnSquare(enemies[i].y-1, enemies[i].x) == 'v')
+					{
+						room[link.y][link.x + 1] = ' ';
+						enemies[i].isAlive = false;
+					}
+
+				}
 			}
 			break;
 		case Direction::LEFT:
@@ -430,7 +469,15 @@ void Room::MoveLink(const InputKey& key)
 			}
 			if (ReturnSquare(link.y, link.x - 1) == 'J')
 			{
-				room[link.y][link.x - 1] = ' ';
+				for (int i = 0; i < m_enemies; i++)
+				{
+					if (ReturnSquare(enemies[i].y, enemies[i].x + 1) == '<')
+					{
+						room[link.y][link.x + 1] = ' ';
+						enemies[i].isAlive = false;
+					}
+
+				}
 			}
 			break;
 		case Direction::RIGHT:
@@ -451,7 +498,16 @@ void Room::MoveLink(const InputKey& key)
 			}
 			if (ReturnSquare(link.y, link.x + 1) == 'J')
 			{
-				room[link.y][link.x + 1] = ' ';
+				for (int i = 0; i < m_enemies; i++)
+				{
+					if (ReturnSquare(enemies[i].y, enemies[i].x - 1) == '>')
+					{
+						room[link.y][link.x + 1] = ' ';
+						enemies[i].isAlive = false;
+					}
+						
+				}
+				
 			}
 			break;
 		}

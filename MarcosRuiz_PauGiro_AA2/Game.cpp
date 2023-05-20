@@ -11,9 +11,8 @@ void Game::Input(const InputKey& key)
 	if (currentScene == Scene::CLASSROOM || currentScene == Scene::HALLWAY || currentScene == Scene::CAFE)
 	{
 		EnterDoor(key);
-		room.MoveEnemies();
 		room.MoveLink(key);
-		
+		room.MoveEnemies();
 	}
 }
 

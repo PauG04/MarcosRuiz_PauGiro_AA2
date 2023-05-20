@@ -92,7 +92,7 @@ int main()
 			}
 
 			// FRAME CONTROL
-			Sleep(1000 / FPS);
+			Sleep(100 / FPS);
 			system("cls");
 
 			// RESET

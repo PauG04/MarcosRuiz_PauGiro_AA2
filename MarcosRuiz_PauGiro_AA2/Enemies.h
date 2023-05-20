@@ -3,6 +3,7 @@
 class Enemies
 {
 	int x, y, enemeisSize, direction, startDirection;
+	bool isAlive;
 
 public:
 	void MoveUpE();
