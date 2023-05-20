@@ -65,6 +65,16 @@ void Room::CreatePlayer(const int& hearts)
 	link.hearts = hearts;
 }
 
+void Room::CreateEnemies()
+{
+	enemies = new Enemies[m_enemies];
+	for (int i = 0; i < m_enemies; i++)
+	{
+		enemies[i].direction = RandomNumber(2, 1);
+		enemies[i].startDirection = RandomNumber(2, 1);
+	}
+}
+
 void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 {
 	
@@ -73,7 +83,7 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 	m_potSize = 3;	
 	m_enemies = 2;
 	pot = new Pot[m_potSize];
-	enemies = new Enemies[m_enemies];
+	CreateEnemies();
 	int pots = 0;
 
 	link.x = m_width / 2;
@@ -217,6 +227,37 @@ char Room::CheckMovement(const InputKey& key)
 	}
 
 }
+char Room::CheckMovementE(const int startDirection, const int direction, const int i)
+{
+	
+		if (direction == 1)
+		{
+			switch (startDirection)
+			{
+			case 1:
+				return ReturnSquare(enemies[i].y - 1, enemies[i].x);
+				break;
+			case 2:
+				return ReturnSquare(enemies[i].y + 1, enemies[i].x);
+				break;
+			}
+		}
+		else
+		{
+			switch (startDirection)
+			{
+			case 1:
+				return ReturnSquare(enemies[i].y, enemies[i].x + 1);
+				break;
+			case 2:
+				return ReturnSquare(enemies[i].y, enemies[i].x - 1);
+				break;
+			}
+		}
+			
+
+		
+}
 
 void Room::DestroyRoom()
 {
@@ -237,6 +278,60 @@ char Room::ReturnSquare(int height, int width)
 {
 	return room[height][width];
 }
+
+void Room::MoveEnemies()
+{
+	for (int i = 0; i < m_enemies; i++)
+	{
+ 		room[enemies[i].y][enemies[i].x] = ' ';
+		if (enemies[i].direction ==  1 && enemies[i].startDirection == 1)
+		{
+			if (room[enemies[i].y+1][enemies[i].x] == ' '|| enemies[i].y + 1 != link.y)
+			{
+				enemies[i].MoveDownE();
+			}
+			else
+			{
+				enemies[i].startDirection = 2;
+			}	
+		}
+		else if (enemies[i].direction == 1 && enemies[i].startDirection == 2)
+		{
+			if (room[enemies[i].y - 1][enemies[i].x] == ' ' || enemies[i].y - 1 != link.y)
+			{
+				enemies[i].MoveUpE();
+			}
+			else
+			{
+				enemies[i].startDirection = 1;
+			}
+		}
+		else if (enemies[i].direction == 2 && enemies[i].startDirection == 1)
+		{
+			if (room[enemies[i].y][enemies[i].x+1]== ' ' || enemies[i].x + 1 != link.x)
+			{
+				enemies[i].MoveRighE();
+			}
+			else
+			{
+				enemies[i].startDirection = 2;
+			}
+		}
+		else if (enemies[i].direction == 2 && enemies[i].startDirection == 2)
+		{
+			if (room[enemies[i].y - 1][enemies[i].x-1] == ' ' || enemies[i].x - 1 != link.x)
+			{
+				enemies[i].MoveLeftE();
+			}
+			else
+			{
+				enemies[i].startDirection = 1;
+			}
+		}
+		room[enemies[i].y][enemies[i].x] = 'J';
+	}
+}
+
 
 void Room::MoveLink(const InputKey& key)
 {

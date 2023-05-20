@@ -33,13 +33,19 @@ public:
 
 	void CreatePlayer(const int& hearts);
 
+	void CreateEnemies();
+
 	void PrintRoom();
 
 	char CheckMovement(const InputKey& key);
 
+	char CheckMovementE(const int startDirection, const int direction, const int i);
+
 	void DestroyRoom();
 
 	void DestroyPot();
+
+	void MoveEnemies();
 
 	void MoveLink(const InputKey& key);
 
