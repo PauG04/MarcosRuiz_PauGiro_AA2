@@ -5,14 +5,14 @@ int Room::RandomNumber(int max, int min)
 	return rand() % ((max)-1 + 1) + 1;
 }
 
-void Room::SetPotPosition(const int& width, const int& height, const int& size, Pot pot[], Player link)
+void Room::SetPotPosition(const int& width, const int& height, const int& size, Pot pot[], Player link, Ganon ganon)
 {
 	for (int k = 0; k < size; k++)
 	{
 		pot[k].x = RandomNumber(width - 2, 1);
 		pot[k].y = RandomNumber(height - 2, 1);
 		pot[k].value = RandomNumber(3, 1);
-		while ((pot[k].x == link.x && pot[k].y == link.y))
+		while ((pot[k].x == link.x && pot[k].y == link.y)|| (pot[k].x == ganon.x && pot[k].y == ganon.y))
 		{
 			pot[k].x = RandomNumber(width - 2, 1);
 			pot[k].y = RandomNumber(height - 2, 1);
@@ -29,13 +29,13 @@ void Room::SetPotPosition(const int& width, const int& height, const int& size, 
 
 }
 
-void Room::SetEnemiesPosition(const int& width, const int& height, const int& size, Pot pot[], Player link, Enemies enemy[], const int& potSize)
+void Room::SetEnemiesPosition(const int& width, const int& height, const int& size, Pot pot[], Player link, Enemies enemy[], Ganon ganon, const int& potSize)
 {
 	for (int k = 0; k < size; k++)
 	{
 		enemy[k].x = RandomNumber(width - 2, 1);
 		enemy[k].y = RandomNumber(height - 2, 1);
-		while ((enemy[k].x == link.x && enemy[k].y == link.y))
+		while ((enemy[k].x == link.x && enemy[k].y == link.y)|| (enemy[k].x == ganon.x && enemy[k].y == ganon.y))
 		{
 			enemy[k].x = RandomNumber(width - 2, 1);
 			enemy[k].y = RandomNumber(height - 2, 1);
@@ -56,6 +56,18 @@ void Room::SetEnemiesPosition(const int& width, const int& height, const int& si
 				enemy[k].y = RandomNumber(height - 2, 1);
 			}
 		}
+	}
+}
+
+void Room::CreateGanon(const int& width, const int& height)
+{
+	ganon.x = RandomNumber(width - 2, 1);
+	ganon.y = RandomNumber(height - 2, 1);
+	ganon.direction = RandomNumber(4, 1);
+	while (ganon.x == link.x && ganon.y == link.y)
+	{
+		ganon.x = RandomNumber(width - 2, 1);
+		ganon.y = RandomNumber(height - 2, 1);
 	}
 }
 
@@ -86,7 +98,6 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 	pot = new Pot[m_potSize];
 	CreateEnemies();
 	int pots = 0;
-
 	link.x = m_width / 2;
 	if (link.m_direction == Direction::DOWN)
 	{
@@ -96,8 +107,12 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 	{
 		link.y = m_height - 2;
 	}
-	SetPotPosition(m_width, m_height, m_potSize, pot, link);
-	SetEnemiesPosition(m_width, m_height, m_enemies, pot, link, enemies, m_potSize);
+	if (numberOfRoom == 3)
+	{
+		CreateGanon(m_width, m_height);
+	}
+	SetPotPosition(m_width, m_height, m_potSize, pot, link, ganon);
+	SetEnemiesPosition(m_width, m_height, m_enemies, pot, link, enemies,ganon, m_potSize);
 	room = new char* [m_height];
 
 	for (int i = 0; i < m_height; i++)
@@ -121,7 +136,6 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 				if (enemies[k].x == j && enemies[k].y == i)
 				{
 					room[i][j] = 'J';
-
 				}
 			}
 			if (link.x == j && link.y == i)
@@ -129,7 +143,10 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom)
 
 				room[i][j] = (char)link.m_direction;
 			}
-			
+			else if (ganon.x == j && ganon.y == i && numberOfRoom == 3)
+			{
+				room[i][j] = 'G';
+			}
 			else if (i == 0 && j == m_width / 2)
 			{
 				
@@ -177,7 +194,7 @@ void Room::PrintRoom()
 			{
 				std::cout << potColor << room[i][j] << ' ';
 			}
-			else if (room[i][j] == 'J')
+			else if (room[i][j] == 'J' || room[i][j] == 'G')
 			{
 				std::cout << enemy << room[i][j] << ' ';
 			}
@@ -242,6 +259,13 @@ void Room::DestroyPot()
 	delete[] pot;
 	pot = nullptr;
 	
+}
+
+void Room::DestroyEnemy()
+{
+	delete[] enemies;
+	enemies = nullptr;
+
 }
 
 char Room::ReturnSquare(int height, int width)
@@ -322,7 +346,7 @@ void Room::MoveLink(const InputKey& key)
 			link.hearts--;
 		for (int i = 0; i < m_enemies; i++)
 		{
-			if (enemies[i].x == link.x && enemies[i].y == link.y)
+			if ((enemies[i].x == link.x && enemies[i].y == link.y && enemies[i].isAlive) || (ganon.x == link.x && ganon.y == link.y))
 			{
 				link.hearts--;
 			}
@@ -383,6 +407,10 @@ void Room::MoveLink(const InputKey& key)
 
 				}
 			}
+			if (ReturnSquare(link.y - 1, link.x) == 'G')
+			{
+				room[link.y - 1][link.x] = ' ';
+			}
 			break;
 		case Direction::DOWN:
 			if (ReturnSquare(link.y + 1, link.x) == 'O')
@@ -411,6 +439,10 @@ void Room::MoveLink(const InputKey& key)
 					}
 
 				}
+			}
+			if (ReturnSquare(link.y + 1, link.x) == 'G')
+			{
+				room[link.y + 1][link.x] = ' ';
 			}
 			break;
 		case Direction::LEFT:
@@ -441,6 +473,10 @@ void Room::MoveLink(const InputKey& key)
 
 				}
 			}
+			if (ReturnSquare(link.y, link.x - 1) == 'G')
+			{
+				room[link.y][link.x - 1] = ' ';
+			}
 			break;
 		case Direction::RIGHT:
 			if (ReturnSquare(link.y, link.x + 1) == 'O')
@@ -470,6 +506,10 @@ void Room::MoveLink(const InputKey& key)
 						
 				}
 				
+			}
+			if (ReturnSquare(link.y, link.x + 1) == 'G')
+			{
+				room[link.y][link.x + 1] = ' ';
 			}
 			break;
 		}

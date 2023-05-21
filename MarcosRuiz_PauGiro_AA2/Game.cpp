@@ -84,11 +84,13 @@ void Game::EnterDoor(const InputKey& key)
 		{
 			NextScene();
 			room.DestroyPot();
+			room.DestroyEnemy();
 		}
 		else
 		{
 			PrevScene();
 			room.DestroyPot();
+			room.DestroyEnemy();
 		}
 		system("cls");
 	}
