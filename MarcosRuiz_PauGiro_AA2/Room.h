@@ -39,8 +39,6 @@ public:
 
 	char CheckMovement(const InputKey& key);
 
-	char CheckMovementE(const int startDirection, const int direction, const int i);
-
 	void DestroyRoom();
 
 	void DestroyPot();

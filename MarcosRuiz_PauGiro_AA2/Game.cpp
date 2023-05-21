@@ -12,7 +12,6 @@ void Game::Input(const InputKey& key)
 	{
 		EnterDoor(key);
 		room.MoveLink(key);
-		room.MoveEnemies();
 	}
 }
 

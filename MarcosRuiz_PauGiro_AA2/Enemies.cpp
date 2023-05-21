@@ -14,5 +14,5 @@ void Enemies::MoveRighE()
 }
 void Enemies::MoveLeftE()
 {
-	y--;
+	x--;
 }
