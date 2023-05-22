@@ -13,6 +13,7 @@ private:
 	int m_height;
 	int m_numberOfPots;
 	int m_numberOfEnemies;
+	int m_numberOfRoom;
 	const std::string player = "\x1b[32m"; //green
 	const std::string wall = "\x1b[37m"; //grey
 	const std::string door = "\x1b[31m"; //red
@@ -51,9 +52,15 @@ public:
 
 	void MoveEnemies();
 
+	void GanonAlive();
+
+	void GetHitted();
+
 	void SetChars(int numberOfRoom);
 
 	void MoveLink(const InputKey& key);
+
+	void MoveGanon();
 
 	char ReturnSquare(int height, int width);
 

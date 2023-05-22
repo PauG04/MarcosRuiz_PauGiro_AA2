@@ -7,7 +7,7 @@ class Ganon
 public:
 	void MoveUpG();
 	void MoveDownG();
-	void MoveRighG();
+	void MoveRightG();
 	void MoveLeftG();
 
 	friend class Room;

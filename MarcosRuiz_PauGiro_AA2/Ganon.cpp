@@ -10,7 +10,7 @@ void Ganon::MoveDownG()
 	y++;
 }
 
-void Ganon::MoveRighG()
+void Ganon::MoveRightG()
 {
 	x++;
 }

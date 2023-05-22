@@ -12,6 +12,15 @@ void Game::Input(const InputKey& key)
 	{
 		EnterDoor(key);
 		room.MoveLink(key);
+		room.GanonAlive();	
+		if (timer == 5)
+		{
+			room.MoveEnemies();
+			room.MoveGanon();
+			room.GetHitted();
+			timer = -1;
+		}
+		timer++;
 	}
 }
 

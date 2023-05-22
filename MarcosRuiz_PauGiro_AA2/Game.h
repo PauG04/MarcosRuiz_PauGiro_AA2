@@ -19,6 +19,7 @@ class Game
 private:
 	Scene currentScene;
 	Room room;
+	int timer;
 
 public:
 	Game();
