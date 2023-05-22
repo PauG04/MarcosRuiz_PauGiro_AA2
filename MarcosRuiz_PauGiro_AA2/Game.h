@@ -2,6 +2,7 @@
 #include "Room.h"
 #include <fstream>
 #include <string>
+#include <vector>
 
 enum class Scene
 {
@@ -42,7 +43,9 @@ public:
 
 	void Input(const InputKey& key);
 
-	int* ReadFile(int i);
+	std::vector<int> ReadRoomSize(int lineToRead);
+
+	int ReadConfig(int lineToRead);
 
 };
 

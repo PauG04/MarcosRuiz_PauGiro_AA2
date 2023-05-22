@@ -11,8 +11,8 @@ private:
 	char** room;
 	int m_width;
 	int m_height;
-	int m_potSize;
-	int m_enemies;
+	int m_numberOfPots;
+	int m_numberOfEnemies;
 	const std::string player = "\x1b[32m"; //green
 	const std::string wall = "\x1b[37m"; //grey
 	const std::string door = "\x1b[31m"; //red
@@ -31,13 +31,13 @@ private:
 public:
 	int RandomNumber(int max, int min);
 
-	void CreateRoom(const int& width, const int& height, int numberOfRoom);
+	void CreateRoom(const int& width, const int& height, int numberOfRoom, int numberOfPots, int numberOfEnemies);
 
 	void CreatePlayer(const int& hearts);
 
 	void CreateEnemies();
 
-	void CreateGanon(const int& width, const int& height);
+	void CreateGanon();
 
 	void PrintRoom();
 
@@ -51,15 +51,17 @@ public:
 
 	void MoveEnemies();
 
+	void SetChars(int numberOfRoom);
+
 	void MoveLink(const InputKey& key);
 
 	char ReturnSquare(int height, int width);
 
 	Player GetLink();
 
-	void SetPotPosition(const int& width, const int& height, const int& size, Pot pot[], Player link, Ganon ganon);
+	void SetPotPosition();
 
-	void SetEnemiesPosition(const int& width, const int& height, const int& size, Pot pot[], Player link, Enemies enemy[], Ganon ganon, const int& potSize);
+	void SetEnemiesPosition();
 
 	friend class Game;
 };

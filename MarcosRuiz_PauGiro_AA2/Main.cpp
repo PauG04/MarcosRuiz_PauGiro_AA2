@@ -35,7 +35,7 @@ int main()
 
 
 			// UPDATE
-			lastScene == game.GetCurrentScene();
+			lastScene = game.GetCurrentScene();
 
 			if (keyboard[static_cast<int>(InputKey::K_ESC)])
 			{

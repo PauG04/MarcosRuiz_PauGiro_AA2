@@ -15,57 +15,93 @@ void Game::Input(const InputKey& key)
 	}
 }
 
-int* Game::ReadFile(int lineToRead)
+int Game::ReadConfig(int lineToRead)
 {
-	std::string width;
-	std::string height;
-	int size[2];
+	std::string numberRead;
+	std::string notUsed;
 
 	std::ifstream roomInfo("config.txt");
 	if (roomInfo.is_open())
 	{
 		for (int i = 0; i < lineToRead; i++)
 		{
-			std::getline(roomInfo, width, ';');
-			std::getline(roomInfo, height, ';');
+			if (i == 2 || i == 5 || i == 8)
+			{
+				std::getline(roomInfo, notUsed, ';');
+				std::getline(roomInfo, notUsed, ';');
+			}
+			else
+				std::getline(roomInfo, numberRead, ';');
 		}
-
 		roomInfo.close();
 	}
 	
+	return stoi(numberRead);
+}
+
+std::vector<int> Game::ReadRoomSize(int lineToRead)
+{
+	std::string width;
+	std::string height;
+	std::string notUsed;
+
+	std::ifstream roomInfo("config.txt");
+	if (roomInfo.is_open())
+	{
+		for (int i = 0; i < lineToRead; i++)
+		{
+			if (i == 2 || i == 5 || i == 8)
+			{
+				std::getline(roomInfo, width, ';');
+				std::getline(roomInfo, height, ';');
+			}
+			else
+				std::getline(roomInfo, notUsed, ';');
+		}
+		roomInfo.close();
+	}
+
+	
+	std::vector<int> size {2, 0};
 	size[0] = stoi(width);
 	size[1] = stoi(height);
 	return size;
+		
 }
 
 void Game::GameManager()
 {
-	int* roomSize;
+	std::vector<int> roomSize;
+	int numberOfEnemies;
+	int numberOfPots;
 	switch (currentScene)
 	{
 	case Scene::INIT_GAME:
 		break;
 
 	case Scene::MENU:
-		room.CreatePlayer(5);
+		room.CreatePlayer(ReadConfig(1));
 		break;
 
 	case Scene::CLASSROOM:
-		roomSize = ReadFile(1);
-		room.CreateRoom(roomSize[0], roomSize[1], 1);
-		roomSize = nullptr;
+		roomSize = ReadRoomSize(3);
+		numberOfEnemies = ReadConfig(4);
+		numberOfPots = ReadConfig(5);
+		room.CreateRoom(roomSize[0], roomSize[1], 1, numberOfEnemies, numberOfPots);
 		break;
 
 	case Scene::HALLWAY:
-		roomSize = ReadFile(2);
-		room.CreateRoom(roomSize[0], roomSize[1], 2);
-		roomSize = nullptr;
+		roomSize = ReadRoomSize(6);
+		numberOfEnemies = ReadConfig(7);
+		numberOfPots = ReadConfig(8);
+		room.CreateRoom(roomSize[0], roomSize[1], 2, numberOfEnemies, numberOfPots);
 		break;
 
 	case Scene::CAFE:
-		roomSize = ReadFile(3);
-		room.CreateRoom(roomSize[0], roomSize[1], 3);
-		roomSize = nullptr;
+		roomSize = ReadRoomSize(9);
+		numberOfEnemies = ReadConfig(10);
+		numberOfPots = ReadConfig(11);
+		room.CreateRoom(roomSize[0], roomSize[1], 3, numberOfEnemies, numberOfPots);
 		break;
 
 	case Scene::GAMEOVER:
