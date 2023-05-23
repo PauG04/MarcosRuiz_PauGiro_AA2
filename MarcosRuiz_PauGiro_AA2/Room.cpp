@@ -59,12 +59,12 @@ void Room::SetEnemiesPosition()
 	}
 }
 
-void Room::CreateGanon()
+void Room::CreateGanon(int health)
 {
 	ganon.x = RandomNumber(m_width - 2, 1);
 	ganon.y = RandomNumber(m_height - 2, 1);
 	ganon.direction = RandomNumber(4, 1);
-	ganon.health = 4;
+	ganon.health = health;
 	while (ganon.x == link.x && ganon.y == link.y)
 	{
 		ganon.x = RandomNumber(m_width - 2, 1);
@@ -98,7 +98,7 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom, int
 	m_numberOfPots = numberOfPots;
 	m_numberOfEnemies = numberOfEnemies;
 	m_numberOfRoom = numberOfRoom;
-
+	ganon.health = 1;
 	pot = new Pot[m_numberOfPots];
 	CreateEnemies();
 	link.x = m_width / 2;
@@ -109,10 +109,6 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom, int
 	else
 	{
 		link.y = m_height - 2;
-	}
-	if (m_numberOfRoom == 3)
-	{
-		CreateGanon();
 	}
 	SetPotPosition();
 	SetEnemiesPosition();
@@ -267,7 +263,6 @@ void Room::DestroyPot()
 {
 	delete[] pot;
 	pot = nullptr;
-	
 }
 
 void Room::DestroyEnemy()
@@ -391,7 +386,6 @@ void Room::MoveGanon()
 		room[ganon.y][ganon.x] = 'G';
 	}
 }
-
 
 void Room::MoveLink(const InputKey& key)
 {
@@ -604,12 +598,14 @@ void Room::GetHitted()
 	}
 }
 
-void Room::GanonAlive()
+bool Room::GanonAlive()
 {
 	if (ganon.health <= 0)
 	{
 		room[ganon.y][ganon.x] = ' ';
+		return false;
 	}
+	return true;
 }
 
 Player Room::GetLink()

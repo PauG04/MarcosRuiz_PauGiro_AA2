@@ -38,7 +38,7 @@ public:
 
 	void CreateEnemies();
 
-	void CreateGanon();
+	void CreateGanon(int health);
 
 	void PrintRoom();
 
@@ -52,7 +52,7 @@ public:
 
 	void MoveEnemies();
 
-	void GanonAlive();
+	bool GanonAlive();
 
 	void GetHitted();
 

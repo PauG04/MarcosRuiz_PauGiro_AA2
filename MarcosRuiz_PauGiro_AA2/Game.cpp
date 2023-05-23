@@ -12,12 +12,13 @@ void Game::Input(const InputKey& key)
 	{
 		EnterDoor(key);
 		room.MoveLink(key);
-		room.GanonAlive();	
 		if (timer == 5)
 		{
 			room.MoveEnemies();
 			room.MoveGanon();
 			room.GetHitted();
+			if (room.link.hearts <= 0)
+				GameOver(false);
 			timer = -1;
 		}
 		timer++;
@@ -111,6 +112,7 @@ void Game::GameManager()
 		numberOfEnemies = ReadConfig(10);
 		numberOfPots = ReadConfig(11);
 		room.CreateRoom(roomSize[0], roomSize[1], 3, numberOfEnemies, numberOfPots);
+		room.CreateGanon(ReadConfig(2));
 		break;
 
 	case Scene::GAMEOVER:
@@ -206,6 +208,9 @@ bool Game::Menu(const InputKey& key, int& last)
 
 void Game::GameOver(bool win)
 {
+	system("cls");
+	currentScene = Scene::GAMEOVER;
+
 	HANDLE console_color;
 	console_color = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(console_color, 32);
@@ -220,7 +225,7 @@ void Game::GameOver(bool win)
 	else
 	{
 		messageGameOver = "YOU LOSE";
-		messageGameOver2 = "GANON";
+		messageGameOver2 = "GANON DEFEATED YOU! GOOD LUCK RETAKING THE COURSE...";
 	}
 
 	std::cout << "************************************************************" << std::endl;
