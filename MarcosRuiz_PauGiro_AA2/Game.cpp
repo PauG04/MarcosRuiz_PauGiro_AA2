@@ -111,8 +111,8 @@ void Game::GameManager()
 		roomSize = ReadRoomSize(9);
 		numberOfEnemies = ReadConfig(10);
 		numberOfPots = ReadConfig(11);
-		room.CreateRoom(roomSize[0], roomSize[1], 3, numberOfEnemies, numberOfPots);
 		room.CreateGanon(ReadConfig(2));
+		room.CreateRoom(roomSize[0], roomSize[1], 3, numberOfEnemies, numberOfPots);	
 		break;
 
 	case Scene::GAMEOVER:

@@ -587,7 +587,7 @@ void Room::GetHitted()
 {
 	for (int i = 0; i < m_numberOfEnemies; i++)
 	{
-		if (enemies[i].y == link.y && enemies[i].x == link.x)
+		if (enemies[i].y == link.y && enemies[i].x == link.x && enemies[i].isAlive)
 		{
 			link.hearts--;
 		}
