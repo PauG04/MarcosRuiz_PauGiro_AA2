@@ -112,6 +112,7 @@ void Game::GameManager()
 		break;
 
 	case Scene::CAFE:
+		room.CreateGanon();
 		room.CreateRoom(roomSize[2][0], roomSize[0][1], 3, numberOfEnemies[2], numberOfPots[2]);
 		break;
 
@@ -130,14 +131,10 @@ void Game::EnterDoor(const InputKey& key)
 		if (key == InputKey::K_UP)
 		{
 			NextScene();
-			room.DestroyPot();
-			//room.DestroyEnemy();
 		}
 		else
 		{
 			PrevScene();
-			room.DestroyPot();
-			//room.DestroyEnemy();
 		}
 		system("cls");
 	}

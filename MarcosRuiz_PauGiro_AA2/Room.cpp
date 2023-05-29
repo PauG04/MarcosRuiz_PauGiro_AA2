@@ -59,12 +59,11 @@ void Room::SetEnemiesPosition()
 	}
 }
 
-void Room::CreateGanon(int health)
+void Room::CreateGanon()
 {
 	ganon.x = RandomNumber(m_width - 2, 1);
 	ganon.y = RandomNumber(m_height - 2, 1);
 	ganon.m_direction = RandomNumber(4, 1);
-	ganon.m_health = health;
 	while (ganon.x == link.x && ganon.y == link.y)
 	{
 		ganon.x = RandomNumber(m_width - 2, 1);
@@ -97,7 +96,6 @@ void Room::CreateRoom(const int& width, const int& height, const int& numberOfRo
 	m_numberOfPots = numberOfPots;
 	m_numberOfEnemies = numberOfEnemies;
 	m_numberOfRoom = numberOfRoom;
-	ganon.m_health = 1;
 	pot = new Pot[m_numberOfPots];
 	CreateEnemies();
 	link.x = m_width / 2;

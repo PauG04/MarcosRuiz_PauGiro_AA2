@@ -20,6 +20,12 @@ int main()
 	// GAME LOOP
 	while (isPlaying)
 	{
+		if (game.GetRoom() != nullptr)
+		{
+			game.GetRoom()->DestroyPot();
+			game.GetRoom()->DestroyEnemy();
+			game.GetRoom()->DestroyRoom();
+		}
 		game.GameManager();
 		lastScene = game.GetCurrentScene();
 

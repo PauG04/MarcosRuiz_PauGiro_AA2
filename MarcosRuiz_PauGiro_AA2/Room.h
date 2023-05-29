@@ -38,7 +38,7 @@ public:
 
 	void CreateEnemies();
 
-	void CreateGanon(int health);
+	void CreateGanon();
 
 	void PrintRoom();
 
