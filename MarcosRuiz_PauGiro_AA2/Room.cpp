@@ -222,9 +222,6 @@ void Room::PrintRoom()
 	}
 	std::cout << std::endl;
 	std::cout << "Hearts: " << link.m_hearts << "     " << "Rupias: " << link.m_rupias;
-	std::cout << std::endl;
-	std::cout << ganon.x << " " << ganon.y;
-
 }
 
 char Room::CheckMovement(const InputKey& key)
@@ -387,38 +384,6 @@ void Room::MoveGanon()
 
 void Room::MoveLink(const InputKey& key)
 {
-	if (CheckMovement(key) == ' ' || CheckMovement(key) == '$' || CheckMovement(key) == '#' || CheckMovement(key) == '&' || CheckMovement(key) == 'J' || CheckMovement(key) == 'G')
-	{
-		room[link.y][link.x] = ' ';
-		if (CheckMovement(key) == '$')
-			link.m_rupias += 1;
-		else if (CheckMovement(key) == '#')
-			link.m_rupias += 5;
-		else if (CheckMovement(key) == '&')
-			link.m_rupias += 20;
-		else if (CheckMovement(key) == 'J')
-			link.m_hearts--;
-		else if (CheckMovement(key) == 'G')
-			link.m_hearts -= 2;
-		switch (key)
-		{
-		case InputKey::K_UP:
-			link.MoveUp();
-			break;
-		case InputKey::K_DOWN:
-			link.MoveDown();	
-			break;
-		case InputKey::K_LEFT:
-			link.MoveLeft();
-			break;
-		case InputKey::K_RIGHT:
-			link.MoveRight();	
-			break;
-		case InputKey::K_SPACE:
-			link.MoveRight();
-			break;
-		}
-	}
 	if (key == InputKey::K_SPACE)
 	{
 		switch (link.m_direction)
@@ -555,6 +520,38 @@ void Room::MoveLink(const InputKey& key)
 			{
 				ganon.m_health--;
 			}
+			break;
+		}
+	}
+	if (CheckMovement(key) == ' ' || CheckMovement(key) == '$' || CheckMovement(key) == '#' || CheckMovement(key) == '&' || CheckMovement(key) == 'J' || CheckMovement(key) == 'G')
+	{
+		room[link.y][link.x] = ' ';
+		if (CheckMovement(key) == '$')
+			link.m_rupias += 1;
+		else if (CheckMovement(key) == '#')
+			link.m_rupias += 5;
+		else if (CheckMovement(key) == '&')
+			link.m_rupias += 20;
+		else if (CheckMovement(key) == 'J')
+			link.m_hearts--;
+		else if (CheckMovement(key) == 'G')
+			link.m_hearts -= 2;
+		switch (key)
+		{
+		case InputKey::K_UP:
+			link.MoveUp();
+			break;
+		case InputKey::K_DOWN:
+			link.MoveDown();
+			break;
+		case InputKey::K_LEFT:
+			link.MoveLeft();
+			break;
+		case InputKey::K_RIGHT:
+			link.MoveRight();
+			break;
+		case InputKey::K_SPACE:
+			link.MoveRight();
 			break;
 		}
 	}

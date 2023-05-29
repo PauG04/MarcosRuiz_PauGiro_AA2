@@ -104,16 +104,16 @@ void Game::GameManager()
 		break;
 
 	case Scene::CLASSROOM:
-		room.CreateRoom(roomSize[0][0], roomSize[0][1], 1, numberOfEnemies[0], numberOfPots[0]);
+		room.CreateRoom(roomSize[0][0], roomSize[0][1], 1, numberOfPots[0], numberOfEnemies[0]);
 		break;
 
 	case Scene::HALLWAY:
-		room.CreateRoom(roomSize[1][0], roomSize[0][1], 2, numberOfEnemies[1], numberOfPots[1]);
+		room.CreateRoom(roomSize[1][0], roomSize[0][1], 2, numberOfPots[1], numberOfEnemies[1]);
 		break;
 
 	case Scene::CAFE:	
 		room.CreateGanon(roomSize[2][0], roomSize[0][1]);
-		room.CreateRoom(roomSize[2][0], roomSize[0][1], 3, numberOfEnemies[2], numberOfPots[2]);
+		room.CreateRoom(roomSize[2][0], roomSize[0][1], 3, numberOfPots[2], numberOfEnemies[2]);
 		break;
 
 	case Scene::GAMEOVER:
