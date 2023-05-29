@@ -38,7 +38,7 @@ public:
 
 	void CreateEnemies();
 
-	void CreateGanon();
+	void CreateGanon(const int& width, const int& height);
 
 	void PrintRoom();
 

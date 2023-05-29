@@ -111,8 +111,8 @@ void Game::GameManager()
 		room.CreateRoom(roomSize[1][0], roomSize[0][1], 2, numberOfEnemies[1], numberOfPots[1]);
 		break;
 
-	case Scene::CAFE:
-		room.CreateGanon();
+	case Scene::CAFE:	
+		room.CreateGanon(roomSize[2][0], roomSize[0][1]);
 		room.CreateRoom(roomSize[2][0], roomSize[0][1], 3, numberOfEnemies[2], numberOfPots[2]);
 		break;
 

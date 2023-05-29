@@ -72,7 +72,7 @@ int main()
 			game.Input(userPressedKey);
 
 			switch (game.GetCurrentScene())
-			{
+			{                         
 			case Scene::INIT_GAME:
 				game.InitGame();
 				break;

@@ -59,15 +59,15 @@ void Room::SetEnemiesPosition()
 	}
 }
 
-void Room::CreateGanon()
+void Room::CreateGanon(const int& width, const int& height)
 {
-	ganon.x = RandomNumber(m_width - 2, 1);
-	ganon.y = RandomNumber(m_height - 2, 1);
+	ganon.x = RandomNumber(width - 2, 1);
+	ganon.y = RandomNumber(height - 2, 1);
 	ganon.m_direction = RandomNumber(4, 1);
 	while (ganon.x == link.x && ganon.y == link.y)
 	{
-		ganon.x = RandomNumber(m_width - 2, 1);
-		ganon.y = RandomNumber(m_height - 2, 1);
+		ganon.x = RandomNumber(width - 2, 1);
+		ganon.y = RandomNumber(height - 2, 1);
 	}
 }
 
@@ -222,6 +222,8 @@ void Room::PrintRoom()
 	}
 	std::cout << std::endl;
 	std::cout << "Hearts: " << link.m_hearts << "     " << "Rupias: " << link.m_rupias;
+	std::cout << std::endl;
+	std::cout << ganon.x << " " << ganon.y;
 
 }
 
