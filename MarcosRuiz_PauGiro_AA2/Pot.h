@@ -6,7 +6,7 @@
 
 class Pot
 {
-public:
+private:
 	int x, y, potSize;
 	int value;
 

@@ -20,3 +20,13 @@ void Player::MoveLeft()
 	x--;
 	m_direction = Direction::LEFT;
 }
+
+int Player::GetHearts() const
+{
+	return hearts;
+}
+
+void Player::SetDirection(const Direction& direction)
+{
+	m_direction = direction;
+}

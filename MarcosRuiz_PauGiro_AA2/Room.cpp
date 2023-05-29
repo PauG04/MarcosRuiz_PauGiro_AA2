@@ -269,7 +269,6 @@ void Room::DestroyEnemy()
 {
 	delete[] enemies;
 	enemies = nullptr;
-
 }
 
 char Room::ReturnSquare(int height, int width)

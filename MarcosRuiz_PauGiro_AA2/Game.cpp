@@ -3,7 +3,7 @@
 Game::Game()
 {
 	currentScene = Scene::INIT_GAME;
-	room.link.m_direction = Direction::UP;
+	room.link.SetDirection(Direction::UP);
 }
 
 void Game::Input(const InputKey& key)
@@ -17,7 +17,7 @@ void Game::Input(const InputKey& key)
 			room.MoveEnemies();
 			room.MoveGanon();
 			room.GetHitted();
-			if (room.link.hearts <= 0)
+			if (room.link.GetHearts() <= 0)
 				GameOver(false);
 			timer = -1;
 		}
@@ -44,9 +44,9 @@ int Game::ReadConfig(int lineToRead)
 				std::getline(roomInfo, numberRead, ';');
 		}
 		roomInfo.close();
+		return stoi(numberRead);
 	}
-	
-	return stoi(numberRead);
+	return -1;
 }
 
 std::vector<int> Game::ReadRoomSize(int lineToRead)
@@ -69,14 +69,13 @@ std::vector<int> Game::ReadRoomSize(int lineToRead)
 				std::getline(roomInfo, notUsed, ';');
 		}
 		roomInfo.close();
+		std::vector<int> size{ 2, 0 };
+		size[0] = stoi(width);
+		size[1] = stoi(height);
+		return size;
 	}
-
-	
-	std::vector<int> size {2, 0};
-	size[0] = stoi(width);
-	size[1] = stoi(height);
-	return size;
-		
+	std::vector<int> size{ 2, -1 };
+	return size;		
 }
 
 void Game::GameManager()

@@ -14,15 +14,18 @@ enum class Direction
 
 class Player
 {
-public:
+private:
 	int x, y, rupias, hearts;
 	Direction m_direction;
 
-public:
 	void MoveUp();
 	void MoveDown();
 	void MoveRight();
 	void MoveLeft();
+
+public:
+	int GetHearts() const;
+	void SetDirection(const Direction& direction);
 
 	friend class Room;
 };
