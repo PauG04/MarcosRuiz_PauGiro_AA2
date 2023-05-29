@@ -63,8 +63,8 @@ void Room::CreateGanon(int health)
 {
 	ganon.x = RandomNumber(m_width - 2, 1);
 	ganon.y = RandomNumber(m_height - 2, 1);
-	ganon.direction = RandomNumber(4, 1);
-	ganon.health = health;
+	ganon.m_direction = RandomNumber(4, 1);
+	ganon.m_health = health;
 	while (ganon.x == link.x && ganon.y == link.y)
 	{
 		ganon.x = RandomNumber(m_width - 2, 1);
@@ -72,10 +72,9 @@ void Room::CreateGanon(int health)
 	}
 }
 
-void Room::CreatePlayer(const int& hearts)
+void Room::CreatePlayer()
 {
-	link.rupias = 0;
-	link.hearts = hearts;
+	link.m_rupias = 0;
 }
 
 void Room::CreateEnemies()
@@ -89,7 +88,7 @@ void Room::CreateEnemies()
 	}
 }
 
-void Room::CreateRoom(const int& width, const int& height, int numberOfRoom, int numberOfPots, int numberOfEnemies)
+void Room::CreateRoom(const int& width, const int& height, const int& numberOfRoom, const int& numberOfPots, const int& numberOfEnemies)
 {
 	
 	m_width = width;
@@ -98,7 +97,7 @@ void Room::CreateRoom(const int& width, const int& height, int numberOfRoom, int
 	m_numberOfPots = numberOfPots;
 	m_numberOfEnemies = numberOfEnemies;
 	m_numberOfRoom = numberOfRoom;
-	ganon.health = 1;
+	ganon.m_health = 1;
 	pot = new Pot[m_numberOfPots];
 	CreateEnemies();
 	link.x = m_width / 2;
@@ -224,7 +223,7 @@ void Room::PrintRoom()
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;
-	std::cout << "Hearts: " << link.hearts << "     " << "Rupias: " << link.rupias;
+	std::cout << "Hearts: " << link.m_hearts << "     " << "Rupias: " << link.m_rupias;
 
 }
 
@@ -338,7 +337,7 @@ void Room::MoveGanon()
 	if (m_numberOfRoom == 3)
 	{
 		room[ganon.y][ganon.x] = ' ';
-		switch (ganon.direction)
+		switch (ganon.m_direction)
 		{
 		case 1:
 			if (room[ganon.y + 1][ganon.x] == ' ' || (ganon.y + 1 == link.y && ganon.x == link.x))
@@ -347,7 +346,7 @@ void Room::MoveGanon()
 			}
 			else
 			{
-				ganon.direction = RandomNumber(4, 1);
+				ganon.m_direction = RandomNumber(4, 1);
 			}
 			break;
 		case 2:
@@ -357,7 +356,7 @@ void Room::MoveGanon()
 			}
 			else
 			{
-				ganon.direction = RandomNumber(4, 1);
+				ganon.m_direction = RandomNumber(4, 1);
 			}
 			break;
 		case 3:
@@ -367,7 +366,7 @@ void Room::MoveGanon()
 			}
 			else
 			{
-				ganon.direction = RandomNumber(4, 1);
+				ganon.m_direction = RandomNumber(4, 1);
 			}
 			break;
 		case 4:
@@ -377,11 +376,11 @@ void Room::MoveGanon()
 			}
 			else
 			{
-				ganon.direction = RandomNumber(4, 1);
+				ganon.m_direction = RandomNumber(4, 1);
 			}
 			break;
 		}
-		ganon.direction = RandomNumber(4, 1);
+		ganon.m_direction = RandomNumber(4, 1);
 		room[ganon.y][ganon.x] = 'G';
 	}
 }
@@ -392,15 +391,15 @@ void Room::MoveLink(const InputKey& key)
 	{
 		room[link.y][link.x] = ' ';
 		if (CheckMovement(key) == '$')
-			link.rupias += 1;
+			link.m_rupias += 1;
 		else if (CheckMovement(key) == '#')
-			link.rupias += 5;
+			link.m_rupias += 5;
 		else if (CheckMovement(key) == '&')
-			link.rupias += 20;
+			link.m_rupias += 20;
 		else if (CheckMovement(key) == 'J')
-			link.hearts--;
+			link.m_hearts--;
 		else if (CheckMovement(key) == 'G')
-			link.hearts -= 2;
+			link.m_hearts -= 2;
 		switch (key)
 		{
 		case InputKey::K_UP:
@@ -454,7 +453,7 @@ void Room::MoveLink(const InputKey& key)
 			}
 			if (ReturnSquare(link.y - 1, link.x) == 'G')
 			{
-				ganon.health--;
+				ganon.m_health--;
 			}
 			break;
 		case Direction::DOWN:
@@ -487,7 +486,7 @@ void Room::MoveLink(const InputKey& key)
 			}
 			if (ReturnSquare(link.y + 1, link.x) == 'G')
 			{
-				ganon.health--;
+				ganon.m_health--;
 			}
 			break;
 		case Direction::LEFT:
@@ -520,7 +519,7 @@ void Room::MoveLink(const InputKey& key)
 			}
 			if (ReturnSquare(link.y, link.x - 1) == 'G')
 			{
-				ganon.health--;
+				ganon.m_health--;
 			}
 			break;
 		case Direction::RIGHT:
@@ -554,7 +553,7 @@ void Room::MoveLink(const InputKey& key)
 			}
 			if (ReturnSquare(link.y, link.x + 1) == 'G')
 			{
-				ganon.health--;
+				ganon.m_health--;
 			}
 			break;
 		}
@@ -588,18 +587,18 @@ void Room::GetHitted()
 	{
 		if (enemies[i].y == link.y && enemies[i].x == link.x && enemies[i].isAlive)
 		{
-			link.hearts--;
+			link.m_hearts--;
 		}
 	}
 	if (ganon.x == link.x && ganon.y == link.y)
 	{
-		link.hearts -= 2;
+		link.m_hearts -= 2;
 	}
 }
 
 bool Room::GanonAlive()
 {
-	if (ganon.health <= 0)
+	if (ganon.m_health <= 0)
 	{
 		room[ganon.y][ganon.x] = ' ';
 		return false;

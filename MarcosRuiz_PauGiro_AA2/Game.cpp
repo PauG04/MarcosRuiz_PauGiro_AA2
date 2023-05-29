@@ -2,6 +2,7 @@
 
 Game::Game()
 {
+	ReadConfig();
 	currentScene = Scene::INIT_GAME;
 	room.link.SetDirection(Direction::UP);
 }
@@ -25,93 +26,93 @@ void Game::Input(const InputKey& key)
 	}
 }
 
-int Game::ReadConfig(int lineToRead)
+void Game::ReadConfig()
 {
-	std::string numberRead;
-	std::string notUsed;
+	std::string numberToRead;
+	std::string numberToRead2;
 
 	std::ifstream roomInfo("config.txt");
 	if (roomInfo.is_open())
 	{
-		for (int i = 0; i < lineToRead; i++)
+		for (int i = 0; i < 11; i++)
 		{
 			if (i == 2 || i == 5 || i == 8)
 			{
-				std::getline(roomInfo, notUsed, ';');
-				std::getline(roomInfo, notUsed, ';');
+				std::getline(roomInfo, numberToRead, ';');
+				std::getline(roomInfo, numberToRead2, ';');
 			}
 			else
-				std::getline(roomInfo, numberRead, ';');
-		}
-		roomInfo.close();
-		return stoi(numberRead);
-	}
-	return -1;
-}
-
-std::vector<int> Game::ReadRoomSize(int lineToRead)
-{
-	std::string width;
-	std::string height;
-	std::string notUsed;
-
-	std::ifstream roomInfo("config.txt");
-	if (roomInfo.is_open())
-	{
-		for (int i = 0; i < lineToRead; i++)
-		{
-			if (i == 2 || i == 5 || i == 8)
 			{
-				std::getline(roomInfo, width, ';');
-				std::getline(roomInfo, height, ';');
+				std::getline(roomInfo, numberToRead, ';');
 			}
-			else
-				std::getline(roomInfo, notUsed, ';');
+			switch (i)
+			{
+			case 0:
+				room.link.SetHearts(stoi(numberToRead));
+				break;
+			case 1:
+				room.ganon.SetHealth(stoi(numberToRead));
+				break;
+			case 2:
+				roomSize[0][0] = stoi(numberToRead);
+				roomSize[0][1] = stoi(numberToRead2);
+				break;
+			case 3:
+				numberOfEnemies[0] = (stoi(numberToRead));
+				break;
+			case 4:
+				numberOfPots[0] = (stoi(numberToRead));
+				break;
+			case 5:
+				roomSize[1][0] = stoi(numberToRead);
+				roomSize[1][1] = stoi(numberToRead2);
+				break;
+			case 6:
+				numberOfEnemies[1] = (stoi(numberToRead));
+				break;
+			case 7:
+				numberOfPots[1] = (stoi(numberToRead));
+				break;
+			case 8:
+				roomSize[2][0] = stoi(numberToRead);
+				roomSize[2][1] = stoi(numberToRead2);
+				break;
+			case 9:
+				numberOfEnemies[2] = (stoi(numberToRead));
+				break;
+			case 10:
+				numberOfPots[2] = (stoi(numberToRead));
+				break;
+			default:
+
+				break;
+			}
 		}
 		roomInfo.close();
-		std::vector<int> size{ 2, 0 };
-		size[0] = stoi(width);
-		size[1] = stoi(height);
-		return size;
 	}
-	std::vector<int> size{ 2, -1 };
-	return size;		
 }
 
 void Game::GameManager()
 {
-	std::vector<int> roomSize;
-	int numberOfEnemies;
-	int numberOfPots;
 	switch (currentScene)
 	{
 	case Scene::INIT_GAME:
 		break;
 
 	case Scene::MENU:
-		room.CreatePlayer(ReadConfig(1));
+		room.CreatePlayer();
 		break;
 
 	case Scene::CLASSROOM:
-		roomSize = ReadRoomSize(3);
-		numberOfEnemies = ReadConfig(4);
-		numberOfPots = ReadConfig(5);
-		room.CreateRoom(roomSize[0], roomSize[1], 1, numberOfEnemies, numberOfPots);
+		room.CreateRoom(roomSize[0][0], roomSize[0][1], 1, numberOfEnemies[0], numberOfPots[0]);
 		break;
 
 	case Scene::HALLWAY:
-		roomSize = ReadRoomSize(6);
-		numberOfEnemies = ReadConfig(7);
-		numberOfPots = ReadConfig(8);
-		room.CreateRoom(roomSize[0], roomSize[1], 2, numberOfEnemies, numberOfPots);
+		room.CreateRoom(roomSize[1][0], roomSize[0][1], 2, numberOfEnemies[1], numberOfPots[1]);
 		break;
 
 	case Scene::CAFE:
-		roomSize = ReadRoomSize(9);
-		numberOfEnemies = ReadConfig(10);
-		numberOfPots = ReadConfig(11);
-		room.CreateGanon(ReadConfig(2));
-		room.CreateRoom(roomSize[0], roomSize[1], 3, numberOfEnemies, numberOfPots);	
+		room.CreateRoom(roomSize[2][0], roomSize[0][1], 3, numberOfEnemies[2], numberOfPots[2]);
 		break;
 
 	case Scene::GAMEOVER:

@@ -3,7 +3,7 @@
 class Ganon
 {
 private:
-	int x, y, health, direction;
+	int x, y, m_health, m_direction;
 
 	void MoveUpG();
 	void MoveDownG();
@@ -12,5 +12,6 @@ private:
 
 public:
 	
+	void SetHealth(const int& health);
 	friend class Room;
 };

@@ -15,7 +15,7 @@ enum class Direction
 class Player
 {
 private:
-	int x, y, rupias, hearts;
+	int x, y, m_rupias, m_hearts;
 	Direction m_direction;
 
 	void MoveUp();
@@ -26,6 +26,7 @@ private:
 public:
 	int GetHearts() const;
 	void SetDirection(const Direction& direction);
+	void SetHearts(const int& hearts);
 
 	friend class Room;
 };

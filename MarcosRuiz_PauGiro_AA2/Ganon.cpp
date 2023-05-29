@@ -19,3 +19,8 @@ void Ganon::MoveLeftG()
 {
 	x--;
 }
+
+void Ganon::SetHealth(const int& health)
+{
+	m_health = health;
+}

@@ -32,9 +32,9 @@ private:
 public:
 	int RandomNumber(int max, int min);
 
-	void CreateRoom(const int& width, const int& height, int numberOfRoom, int numberOfPots, int numberOfEnemies);
+	void CreateRoom(const int& width, const int& height, const int& numberOfRoom, const int& numberOfPots, const int& numberOfEnemies);
 
-	void CreatePlayer(const int& hearts);
+	void CreatePlayer();
 
 	void CreateEnemies();
 

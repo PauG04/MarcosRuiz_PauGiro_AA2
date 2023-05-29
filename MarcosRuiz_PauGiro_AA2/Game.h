@@ -20,6 +20,10 @@ private:
 	Scene currentScene;
 	Room room;
 	int timer;
+	int roomSize[3][2];
+	int numberOfEnemies[3];
+	int numberOfPots[3];
+
 
 public:
 	Game();
@@ -44,9 +48,7 @@ public:
 
 	void Input(const InputKey& key);
 
-	std::vector<int> ReadRoomSize(int lineToRead);
-
-	int ReadConfig(int lineToRead);
+	void ReadConfig();
 
 };
 

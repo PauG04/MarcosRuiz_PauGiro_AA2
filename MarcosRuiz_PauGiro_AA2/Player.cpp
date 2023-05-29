@@ -23,10 +23,15 @@ void Player::MoveLeft()
 
 int Player::GetHearts() const
 {
-	return hearts;
+	return m_hearts;
 }
 
 void Player::SetDirection(const Direction& direction)
 {
 	m_direction = direction;
+}
+
+void Player::SetHearts(const int& hearts)
+{
+	m_hearts = hearts;
 }
