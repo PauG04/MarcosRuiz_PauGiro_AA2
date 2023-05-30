@@ -137,7 +137,7 @@ void Room::SetChars(int numberOfRoom)
 			{
 				if (enemies[k].x == j && enemies[k].y == i)
 				{
-					room[i][j] = 'J';
+					room[i][j] = 'S';
 				}
 			}
 			if (link.x == j && link.y == i)
@@ -171,7 +171,7 @@ void Room::SetChars(int numberOfRoom)
 			}
 			else
 			{
-				if (room[i][j] != 'O' && room[i][j] != 'J')
+				if (room[i][j] != 'O' && room[i][j] != 'S')
 					room[i][j] = ' ';
 			}
 		}
@@ -196,7 +196,7 @@ void Room::PrintRoom()
 			{
 				std::cout << potColor << room[i][j] << ' ';
 			}
-			else if (room[i][j] == 'J' || room[i][j] == 'G')
+			else if (room[i][j] == 'S' || room[i][j] == 'G')
 			{
 				std::cout << enemy << room[i][j] << ' ';
 			}
@@ -324,7 +324,7 @@ void Room::MoveEnemies()
 					enemies[i].startDirection = 1;
 				}		
 			}
-			room[enemies[i].y][enemies[i].x] = 'J';
+			room[enemies[i].y][enemies[i].x] = 'S';
 		}	
 	}
 }
@@ -404,7 +404,7 @@ void Room::MoveLink(const InputKey& key)
 					}
 				}
 			}
-			if (ReturnSquare(link.y - 1, link.x) == 'J')
+			if (ReturnSquare(link.y - 1, link.x) == 'S')
 			{
 				for (int i = 0; i < m_numberOfEnemies; i++)
 				{
@@ -437,7 +437,7 @@ void Room::MoveLink(const InputKey& key)
 					}
 				}
 			}
-			if (ReturnSquare(link.y + 1, link.x) == 'J')
+			if (ReturnSquare(link.y + 1, link.x) == 'S')
 			{
 				for (int i = 0; i < m_numberOfEnemies; i++)
 				{
@@ -470,7 +470,7 @@ void Room::MoveLink(const InputKey& key)
 					}
 				}
 			}
-			if (ReturnSquare(link.y, link.x - 1) == 'J')
+			if (ReturnSquare(link.y, link.x - 1) == 'S')
 			{
 				for (int i = 0; i < m_numberOfEnemies; i++)
 				{
@@ -503,7 +503,7 @@ void Room::MoveLink(const InputKey& key)
 					}
 				}
 			}
-			if (ReturnSquare(link.y, link.x + 1) == 'J')
+			if (ReturnSquare(link.y, link.x + 1) == 'S')
 			{
 				for (int i = 0; i < m_numberOfEnemies; i++)
 				{
@@ -523,7 +523,7 @@ void Room::MoveLink(const InputKey& key)
 			break;
 		}
 	}
-	if (CheckMovement(key) == ' ' || CheckMovement(key) == '$' || CheckMovement(key) == '#' || CheckMovement(key) == '&' || CheckMovement(key) == 'J' || CheckMovement(key) == 'G')
+	if(CheckMovement(key) != 'X' && CheckMovement(key) != 'O' && CheckMovement(key) != 'P')
 	{
 		room[link.y][link.x] = ' ';
 		if (CheckMovement(key) == '$')
@@ -532,7 +532,7 @@ void Room::MoveLink(const InputKey& key)
 			link.m_rupias += 5;
 		else if (CheckMovement(key) == '&')
 			link.m_rupias += 20;
-		else if (CheckMovement(key) == 'J')
+		else if (CheckMovement(key) == 'S')
 			link.m_hearts--;
 		else if (CheckMovement(key) == 'G')
 			link.m_hearts -= 2;
@@ -548,9 +548,6 @@ void Room::MoveLink(const InputKey& key)
 			link.MoveLeft();
 			break;
 		case InputKey::K_RIGHT:
-			link.MoveRight();
-			break;
-		case InputKey::K_SPACE:
 			link.MoveRight();
 			break;
 		}
