@@ -341,19 +341,11 @@ void Room::MoveGanon()
 			{
 				ganon.MoveDownG();
 			}
-			else
-			{
-				ganon.m_direction = RandomNumber(4, 1);
-			}
 			break;
 		case 2:
 			if (room[ganon.y - 1][ganon.x] == ' ' || (ganon.y - 1 == link.y && ganon.x == link.x))
 			{
 				ganon.MoveUpG();
-			}
-			else
-			{
-				ganon.m_direction = RandomNumber(4, 1);
 			}
 			break;
 		case 3:
@@ -361,19 +353,11 @@ void Room::MoveGanon()
 			{
 				ganon.MoveRightG();
 			}
-			else
-			{
-				ganon.m_direction = RandomNumber(4, 1);
-			}
 			break;
 		case 4:
 			if (room[ganon.y][ganon.x - 1] == ' ' || (ganon.y == link.y && ganon.x - 1 == link.x))
 			{
 				ganon.MoveLeftG();
-			}
-			else
-			{
-				ganon.m_direction = RandomNumber(4, 1);
 			}
 			break;
 		}
